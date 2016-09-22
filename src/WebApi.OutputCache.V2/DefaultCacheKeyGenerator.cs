@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http.Controllers;
 
-namespace WebApi.OutputCache.V2
+namespace WebApi2.RedisOutputCache
 {
     public class DefaultCacheKeyGenerator : ICacheKeyGenerator
     {

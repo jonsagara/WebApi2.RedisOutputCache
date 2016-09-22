@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Web.Http.Filters;
 
-namespace WebApi.OutputCache.V2
+namespace WebApi2.RedisOutputCache
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public sealed class InvalidateCacheOutputAttribute : BaseCacheAttribute

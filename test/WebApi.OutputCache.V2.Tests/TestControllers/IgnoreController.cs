@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace WebApi.OutputCache.V2.Tests.TestControllers
+namespace WebApi2.RedisOutputCache.Tests.TestControllers
 {
     [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
     public class IgnoreController : ApiController

@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace WebApi.OutputCache.V2.Tests.TestControllers
+namespace WebApi2.RedisOutputCache.Tests.TestControllers
 {
     public class InlineInvalidateController : ApiController
     {

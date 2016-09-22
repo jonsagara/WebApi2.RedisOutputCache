@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using WebApi.OutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Cache;
 
-namespace WebApi.OutputCache.Core.Tests
+namespace WebApi2.RedisOutputCache.Core.Tests
 {
     [TestFixture]
     public class MemoryCacheDefaultTests

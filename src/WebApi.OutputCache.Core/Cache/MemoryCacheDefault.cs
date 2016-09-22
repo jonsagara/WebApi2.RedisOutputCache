@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 
-namespace WebApi.OutputCache.Core.Cache
+namespace WebApi2.RedisOutputCache.Core.Cache
 {
     /// <summary>
     /// In-memory cache. Does not support async operations. Calling them will result in a NotSupportedException.

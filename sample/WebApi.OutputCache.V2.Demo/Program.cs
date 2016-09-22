@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
-using WebApi.OutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Cache;
 
-namespace WebApi.OutputCache.V2.Demo
+namespace WebApi2.RedisOutputCache.Demo
 {
     class Program
     {

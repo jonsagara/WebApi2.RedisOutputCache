@@ -7,8 +7,8 @@
     <ProjectGuid>{7A6F57F6-38E1-4287-812E-AD7D1025BA5E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApi.OutputCache.V2</RootNamespace>
-    <AssemblyName>WebApi.OutputCache.V2</AssemblyName>
+    <RootNamespace>WebApi2.RedisOutputCache</RootNamespace>
+    <AssemblyName>WebApi2.RedisOutputCache</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\WebApi.OutputCache.V2.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\WebApi2.RedisOutputCache.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>

@@ -8,9 +8,9 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using Moq;
 using NUnit.Framework;
-using WebApi.OutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Cache;
 
-namespace WebApi.OutputCache.V2.Tests
+namespace WebApi2.RedisOutputCache.Tests
 {
     [TestFixture]
     class CacheKeyGeneratorTests

@@ -7,8 +7,8 @@
     <ProjectGuid>{3E45FA0B-C465-4DE9-9BC3-40A606B73E84}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApi.OutputCache.Core</RootNamespace>
-    <AssemblyName>WebApi.OutputCache.Core</AssemblyName>
+    <RootNamespace>WebApi2.RedisOutputCache.Core</RootNamespace>
+    <AssemblyName>WebApi2.RedisOutputCache.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

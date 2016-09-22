@@ -7,8 +7,8 @@
     <ProjectGuid>{FC585541-1F28-4D49-BCD9-1A08A90B2C66}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApi.OutputCache.V2.Demo</RootNamespace>
-    <AssemblyName>WebApi.OutputCache.V2.Demo</AssemblyName>
+    <RootNamespace>WebApi2.RedisOutputCache.Demo</RootNamespace>
+    <AssemblyName>WebApi2.RedisOutputCache.Demo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

@@ -1,4 +1,4 @@
-﻿namespace WebApi.OutputCache.Core
+﻿namespace WebApi2.RedisOutputCache.Core
 {
     public sealed class Constants
     {

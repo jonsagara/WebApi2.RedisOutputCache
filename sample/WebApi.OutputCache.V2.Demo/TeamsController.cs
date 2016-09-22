@@ -3,9 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebApi.OutputCache.V2.TimeAttributes;
+using WebApi2.RedisOutputCache.TimeAttributes;
 
-namespace WebApi.OutputCache.V2.Demo
+namespace WebApi2.RedisOutputCache.Demo
 {
     public class TeamsController : ApiController
     {

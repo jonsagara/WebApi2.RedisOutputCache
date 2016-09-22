@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using WebApi.OutputCache.Core;
-using WebApi.OutputCache.Core.Time;
+using WebApi2.RedisOutputCache.Core;
+using WebApi2.RedisOutputCache.Core.Time;
 
-namespace WebApi.OutputCache.V2
+namespace WebApi2.RedisOutputCache
 {
     /// <summary>
     /// Caches all applicable responses to GET requests. It's added to the collection of Web API filters at application start.

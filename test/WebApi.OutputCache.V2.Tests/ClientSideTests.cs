@@ -3,9 +3,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using NUnit.Framework;
-using WebApi.OutputCache.Core.Time;
+using WebApi2.RedisOutputCache.Core.Time;
 
-namespace WebApi.OutputCache.V2.Tests
+namespace WebApi2.RedisOutputCache.Tests
 {
     [TestFixture]
     public class ClientSideTests

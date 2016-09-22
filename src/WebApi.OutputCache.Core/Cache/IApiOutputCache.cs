@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WebApi.OutputCache.Core.Cache
+namespace WebApi2.RedisOutputCache.Core.Cache
 {
     public interface IApiOutputCache
     {

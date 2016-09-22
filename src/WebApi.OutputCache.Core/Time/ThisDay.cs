@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApi.OutputCache.Core.Time
+namespace WebApi2.RedisOutputCache.Core.Time
 {
     public class ThisDay : IModelQuery<DateTime, CacheTime>
     {

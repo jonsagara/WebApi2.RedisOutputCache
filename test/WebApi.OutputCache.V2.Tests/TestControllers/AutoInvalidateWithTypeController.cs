@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 
-namespace WebApi.OutputCache.V2.Tests.TestControllers
+namespace WebApi2.RedisOutputCache.Tests.TestControllers
 {
     [AutoInvalidateCacheOutput(TryMatchType = true)]
     public class AutoInvalidateWithTypeController : ApiController

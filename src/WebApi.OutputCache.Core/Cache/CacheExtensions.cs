@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApi.OutputCache.Core.Cache
+namespace WebApi2.RedisOutputCache.Core.Cache
 {
     public static class CacheExtensions
     {
