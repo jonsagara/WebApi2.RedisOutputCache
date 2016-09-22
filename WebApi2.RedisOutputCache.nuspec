@@ -21,6 +21,10 @@
     </dependencies>
   </metadata>
   <files>
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\*.*" target="lib\net45\" />
+      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.dll" target="lib\net45\" />
+      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.pdb" target="lib\net45\" />
+      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.xml" target="lib\net45\" />
+      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.Core.dll" target="lib\net45\" />
+      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.Core.pdb" target="lib\net45\" />
     </files>
 </package>
