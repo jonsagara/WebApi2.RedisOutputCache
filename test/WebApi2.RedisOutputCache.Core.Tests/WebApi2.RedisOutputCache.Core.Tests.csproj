@@ -49,9 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi.OutputCache.Core\WebApi.OutputCache.Core.csproj">
+    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache.Core\WebApi2.RedisOutputCache.Core.csproj">
       <Project>{3E45FA0B-C465-4DE9-9BC3-40A606B73E84}</Project>
-      <Name>WebApi.OutputCache.Core</Name>
+      <Name>WebApi2.RedisOutputCache.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

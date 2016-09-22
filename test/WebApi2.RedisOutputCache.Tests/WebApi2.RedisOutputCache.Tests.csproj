@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC585541-1F28-4D49-BCD9-1A08A90B2C66}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{1267460B-C100-48AD-B2E2-9DDE2E40F052}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApi2.RedisOutputCache.Demo</RootNamespace>
-    <AssemblyName>WebApi2.RedisOutputCache.Demo</AssemblyName>
+    <RootNamespace>WebApi2.RedisOutputCache.Tests</RootNamespace>
+    <AssemblyName>WebApi2.RedisOutputCache.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -34,29 +34,36 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.3.1.3\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.WebApi2.3.0.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.Http.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http.SelfHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.SelfHost.5.2.2\lib\net45\System.Web.Http.SelfHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -66,25 +73,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IgnoreController.cs" />
-    <Compile Include="Teams2Controller.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Team.cs" />
-    <Compile Include="TeamsController.cs" />
+    <Compile Include="CacheKeyGeneratorRegistrationTests.cs" />
+    <Compile Include="CacheKeyGeneratorTests.cs" />
+    <Compile Include="ClientSideTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConnegTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InlineInvalidateTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvalidateTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServerSideTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestControllers\AutoInvalidateController.cs" />
+    <Compile Include="TestControllers\AutoInvalidateWithTypeController.cs" />
+    <Compile Include="TestControllers\CacheKeyController.cs" />
+    <Compile Include="TestControllers\IgnoreController.cs" />
+    <Compile Include="TestControllers\InlineInvalidateController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestControllers\SampleController.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi.OutputCache.Core\WebApi.OutputCache.Core.csproj">
-      <Project>{3E45FA0B-C465-4DE9-9BC3-40A606B73E84}</Project>
-      <Name>WebApi.OutputCache.Core</Name>
+    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache.Core\WebApi2.RedisOutputCache.Core.csproj">
+      <Project>{3e45fa0b-c465-4de9-9bc3-40a606b73e84}</Project>
+      <Name>WebApi2.RedisOutputCache.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\WebApi.OutputCache.V2\WebApi.OutputCache.V2.csproj">
+    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache\WebApi2.RedisOutputCache.csproj">
       <Project>{7a6f57f6-38e1-4287-812e-ad7d1025ba5e}</Project>
-      <Name>WebApi2.OutputCache</Name>
+      <Name>WebApi2.RedisOutputCache</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

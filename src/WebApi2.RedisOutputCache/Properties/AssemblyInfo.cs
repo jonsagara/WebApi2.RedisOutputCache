@@ -5,15 +5,15 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WebAPI.OutputCache")]
+[assembly: AssemblyTitle("WebApi2.RedisOutputCache")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WebAPI.OutputCache")]
+[assembly: AssemblyProduct("WebApi2.RedisOutputCache")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("WebAPI.OutputCache.Tests")]
+[assembly: InternalsVisibleTo("WebApi2.RedisOutputCache.Tests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

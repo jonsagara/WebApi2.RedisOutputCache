@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WebApi2.RedisOutputCache.Core")]
+[assembly: AssemblyTitle("WebApi2.RedisOutputCache.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WebApi2.RedisOutputCache.Core")]
+[assembly: AssemblyProduct("WebApi2.RedisOutputCache.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b7a4d670-5938-4d45-93a2-79ea6e442333")]
+[assembly: Guid("a3aa26bd-d83e-42ef-bf3b-39875348ae0b")]
 
 // Version information for an assembly consists of the following four values:
 //
