@@ -57,12 +57,15 @@
   <ItemGroup>
     <Compile Include="AutoInvalidateCacheOutputAttribute.cs" />
     <Compile Include="BaseCacheAttribute.cs" />
+    <Compile Include="BaseOutputCacheAttribute.cs" />
     <Compile Include="CacheOutputConfiguration.cs" />
+    <Compile Include="CatchallOutputCacheAttribute.cs" />
     <Compile Include="DefaultCacheKeyGenerator.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="ICacheKeyGenerator.cs" />
     <Compile Include="IgnoreCacheOutputAttribute.cs" />
     <Compile Include="InvalidateCacheOutputAttribute.cs" />
+    <Compile Include="InvalidateOutputCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CacheOutputAttribute.cs" />
     <Compile Include="TimeAttributes\CacheOutputUntilCacheAttribute.cs" />
