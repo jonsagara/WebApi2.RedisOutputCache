@@ -12,12 +12,10 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         T Get<T>(string key) where T : class;
         Task<T> GetAsync<T>(string key) where T : class;
 
-        [Obsolete("Use Get<T> instead")]
-        object Get(string key);
-        [Obsolete("Use GetAsync<T> instead")]
-        Task<object> GetAsync(string key);
+        Task<string[]> GetSetMembersAsync(string key);
 
         void Remove(string key);
+        Task<long> RemoveAsync(string[] keys);
 
         bool Contains(string key);
         Task<bool> ContainsAsync(string key);

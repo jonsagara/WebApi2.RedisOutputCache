@@ -78,6 +78,45 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             return default(T);
         }
 
+        public async Task<string[]> GetSetMembersAsync(string key)
+        {
+            try
+            {
+                var result = await _redisDb.SetMembersAsync(key);
+                return result.Select(m => (string)m).ToArray();
+            }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                Logger.Error(ex, $"Unhandled exception in GetSetMembersAsync<T>(string) for key = {key}");
+            }
+
+            return new string[0];
+        }
+
+        public async Task<long> RemoveAsync(string[] keys)
+        {
+            if (keys == null)
+            {
+                throw new ArgumentNullException(nameof(keys));
+            }
+
+            try
+            {
+                if (keys.Length > 0)
+                {
+                    return await _redisDb.KeyDeleteAsync(keys.Select(k => (RedisKey)k).ToArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                Logger.Error(ex, $"Unhandled exception in RemoveAsync<T>(string[]) for keys = '{string.Join(", ", keys)}'");
+            }
+
+            return 0L;
+        }
+
         /// <summary>
         /// Determines whether redis contains an element with the given key name.
         /// </summary>
@@ -178,26 +217,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         public T Get<T>(string key) where T : class
         {
             throw new NotSupportedException("Synchronous method not supported. Use GetAsync<T> instead.");
-        }
-
-        /// <summary>
-        /// Synchronous, non-generic method not supported. Use GetAsync&lt;T&gt; instead.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public object Get(string key)
-        {
-            throw new NotSupportedException("Synchronous, non-generic method not supported. Use GetAsync<T> instead.");
-        }
-
-        /// <summary>
-        /// Non-generic method not supported. Use GetAsync&lt;T&gt; instead.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public Task<object> GetAsync(string key)
-        {
-            throw new NotSupportedException("Non-generic method not supported. Use GetAsync<T> instead.");
         }
 
         /// <summary>

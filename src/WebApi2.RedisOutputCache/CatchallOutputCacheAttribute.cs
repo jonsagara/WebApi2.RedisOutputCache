@@ -105,7 +105,8 @@ namespace WebApi2.RedisOutputCache
 
             //
             // Generate the cache key for this action. It will look something like this:
-            //   vitalsservice.web.api.controllers.vitalscontroller-getvitals-customerid=3583&patientId=31eb2386-1b98-4a5d-bba0-a62d008ea976&qsparam1=ohai:application/json; charset=utf8
+            //
+            //   somenamespace.controllers.somecontroller-someaction-customerid=3583&userId=31eb2386-1b98-4a5d-bba0-a62d008ea976&qsparam1=ohai:application/json; charset=utf8
             //
 
             var cacheKey = MakeFullCacheKey(actionContext, responseMediaType, ExcludeQueryStringFromCacheKey);

@@ -44,17 +44,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             throw new NotSupportedException();
         }
 
-        [Obsolete("Use Get<T> instead")]
-        public virtual object Get(string key)
-        {
-            return Cache.Get(key);
-        }
-
-        public Task<object> GetAsync(string key)
-        {
-            throw new NotSupportedException();
-        }
-
         public virtual void Remove(string key)
         {
             lock (Cache)
@@ -103,6 +92,16 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         }
 
         public Task<long> AddSetAsync(string key, string[] values)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<string[]> GetSetMembersAsync(string key)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<long> RemoveAsync(string[] keys)
         {
             throw new NotSupportedException();
         }
