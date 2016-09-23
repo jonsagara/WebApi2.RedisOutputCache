@@ -131,6 +131,21 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             }
         }
 
+        public async Task<long> AddSetAsync(string key, string[] values)
+        {
+            try
+            {
+                return await _redisDb.SetAddAsync(key, values.Select(v => (RedisValue)v).ToArray());
+            }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                Logger.Error(ex, $"Unhandled exception in AddSetAsync(string, string[]) for key = {key}");
+            }
+
+            return default(long);
+        }
+
 
         #region Unsupported Properties and Methods
 

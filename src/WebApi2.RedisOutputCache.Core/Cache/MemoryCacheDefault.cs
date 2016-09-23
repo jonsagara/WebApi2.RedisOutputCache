@@ -100,7 +100,12 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         public Task AddAsync(string key, object o, DateTimeOffset expiration, string dependsOnKey = null)
         {
             throw new NotSupportedException();
-        }        
+        }
+
+        public Task<long> AddSetAsync(string key, string[] values)
+        {
+            throw new NotSupportedException();
+        }
 
         public virtual IEnumerable<string> AllKeys
         {
