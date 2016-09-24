@@ -106,6 +106,11 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             throw new NotSupportedException();
         }
 
+        public Task<int> GetOrIncrAsync(string key)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<string> AllKeys
         {
             get

@@ -12,6 +12,13 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         T Get<T>(string key) where T : class;
         Task<T> GetAsync<T>(string key) where T : class;
 
+        /// <summary>
+        /// If the counter exists, get its current value. Otherwise, initialize to 1 and return it.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        Task<int> GetOrIncrAsync(string key);
+
         Task<string[]> GetSetMembersAsync(string key);
 
         void Remove(string key);

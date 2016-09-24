@@ -78,6 +78,30 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             return default(T);
         }
 
+        public async Task<int> GetOrIncrAsync(string key)
+        {
+            try
+            {
+                const string luaScript = @"
+local genId = redis.call('GET', KEYS[1])
+if genId ~= false then
+    return genId
+end
+
+return redis.call('INCR', KEYS[1])
+";
+                var result = await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
+                return (int)result;
+            }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                Logger.Error(ex, $"Unhandled exception in GetOrIncrAsync<T>(string) for key = {key}");
+            }
+
+            return default(int);
+        }
+
         public async Task<string[]> GetSetMembersAsync(string key)
         {
             try
