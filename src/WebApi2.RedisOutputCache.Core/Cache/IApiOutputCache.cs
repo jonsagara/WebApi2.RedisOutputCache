@@ -17,7 +17,9 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<int> GetOrIncrAsync(string key);
+        Task<long> GetOrIncrAsync(string key);
+
+        Task<long> IncrAsync(string key);
 
         Task<string[]> GetSetMembersAsync(string key);
 

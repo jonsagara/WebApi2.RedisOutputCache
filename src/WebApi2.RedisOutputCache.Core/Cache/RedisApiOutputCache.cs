@@ -78,7 +78,7 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             return default(T);
         }
 
-        public async Task<int> GetOrIncrAsync(string key)
+        public async Task<long> GetOrIncrAsync(string key)
         {
             try
             {
@@ -96,10 +96,25 @@ return redis.call('INCR', KEYS[1])
             catch (Exception ex)
             {
                 // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in GetOrIncrAsync<T>(string) for key = {key}");
+                Logger.Error(ex, $"Unhandled exception in GetOrIncrAsync<long>(string) for key = {key}");
             }
 
-            return default(int);
+            return default(long);
+        }
+
+        public async Task<long> IncrAsync(string key)
+        {
+            try
+            {
+                return await _redisDb.StringIncrementAsync(key);
+            }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                Logger.Error(ex, $"Unhandled exception in IncrAsync<long>(string) for key = {key}");
+            }
+
+            return default(long);
         }
 
         public async Task<string[]> GetSetMembersAsync(string key)
