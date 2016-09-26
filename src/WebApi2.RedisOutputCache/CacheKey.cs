@@ -14,7 +14,7 @@
         }
 
         /// <summary>
-        /// Creates a cache key for referencing an action's argument name/value version id, e.g., &quot;controller-action-argName=argVal-version&quot;.
+        /// Creates a cache key for referencing an action's argument name/value version id, e.g., &quot;controller-action-argname=argVal-version&quot;.
         /// </summary>
         /// <param name="controllerLowered"></param>
         /// <param name="actionLowered"></param>
@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Creates a string like &quot;argName=argVal_v1&quot;. This is used for arguments that are part of the action's method
+        /// Creates a string like &quot;argname=argVal_v1&quot;. This is used for arguments that are part of the action's method
         /// signature.
         /// </summary>
         /// <param name="argumentNameLowered"></param>
@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Creates a string like &quot;argName=argVal&quot;. This is used for query string parameters, which are not versioned.
+        /// Creates a string like &quot;argname=argVal&quot;. This is used for query string parameters, which are not versioned.
         /// </summary>
         /// <param name="argumentNameLowered"></param>
         /// <param name="argumentValue"></param>
