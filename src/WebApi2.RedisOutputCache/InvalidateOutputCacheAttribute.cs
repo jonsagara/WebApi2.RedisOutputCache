@@ -9,6 +9,7 @@ namespace WebApi2.RedisOutputCache
     /// <summary>
     /// Invalidates cache for the specified controller and action, and argument values.
     /// </summary>
+    [Obsolete("Marked for removal.")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class InvalidateOutputCacheAttribute : BaseOutputCacheAttribute
     {

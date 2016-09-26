@@ -18,6 +18,7 @@ namespace WebApi2.RedisOutputCache
     /// <summary>
     /// Caches all applicable responses to GET requests. It's added to the collection of Web API filters at application start.
     /// </summary>
+    [Obsolete("Marked for removal.")]
     public class CatchallOutputCacheAttribute : BaseOutputCacheAttribute
     {
         private const string CurrentRequestMediaType = "CatchallOutputCacheAttribute:CurrentRequestMediaType";

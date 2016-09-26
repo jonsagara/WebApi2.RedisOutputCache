@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,6 +14,37 @@ namespace WebApi2.RedisOutputCache
     public abstract class BaseOutputCacheAttribute : BaseCacheAttribute
     {
         /// <summary>
+        /// If the value is an IEnumerable, but not a string, flatten it into a string. Otherwise, convert it
+        /// into a string.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        protected string GetValueAsString(object val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+
+            if (val is IEnumerable && !(val is string))
+            {
+                // It's an IEnumerable, but not a string. Convert each value to a string, and join them with semicolons.
+                var concatValue = string.Empty;
+                var paramArray = val as IEnumerable;
+
+                return paramArray
+                    .Cast<object>()
+                    .Aggregate(concatValue, (current, paramValue) => current + (paramValue + ";"));
+            }
+
+            // It's a single value. Convert it to a string.
+            return val.ToString();
+        }
+
+
+        #region Obsolete methods marked for removal
+
+        /// <summary>
         /// Generate a full cache key, which includes all non-null action action arguments, query string parameter names/values
         /// (if requested), and the media type.
         /// </summary>
@@ -20,6 +52,7 @@ namespace WebApi2.RedisOutputCache
         /// <param name="mediaType"></param>
         /// <param name="excludeQueryString"></param>
         /// <returns></returns>
+        [Obsolete("Marked for removal.")]
         protected string MakeFullCacheKey(HttpActionContext actionContext, MediaTypeHeaderValue mediaType, bool excludeQueryString = false)
         {
             var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerType.FullName;
@@ -72,6 +105,7 @@ namespace WebApi2.RedisOutputCache
         /// <param name="actionContext"></param>
         /// <param name="justTheseActionParameters">If populated, we'll only include the action parameters in the array. Otherwise, we'll include all action parameters present.</param>
         /// <returns></returns>
+        [Obsolete("Marked for removal.")]
         protected string MakeBaseCacheKey(HttpActionContext actionContext, string[] justTheseActionParameters = null)
         {
             var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerType.FullName;
@@ -89,6 +123,7 @@ namespace WebApi2.RedisOutputCache
         /// <param name="action"></param>
         /// <param name="justTheseActionParameters">If populated, we'll only include the action parameters in the array. Otherwise, we'll include all action parameters present.</param>
         /// <returns></returns>
+        [Obsolete("Marked for removal.")]
         protected string MakeBaseCacheKey(HttpActionContext actionContext, string controller, string action, string[] justTheseActionParameters)
         {
             var controllerAction = MakeControllerActionString(controller, action);
@@ -104,11 +139,13 @@ namespace WebApi2.RedisOutputCache
             return $"{controllerAction}-{string.Join("&", nonNullActionArgs)}";
         }
 
+        [Obsolete("Marked for removal.")]
         private string MakeControllerActionString(string controller, string action)
         {
             return $"{controller.ToLower()}-{action.ToLower()}";
         }
 
+        [Obsolete("Marked for removal.")]
         private string[] GetActionArgumentNameValuePairs(HttpActionContext actionContext, string[] justTheseActionParameters)
         {
             // No NREs.
@@ -130,6 +167,7 @@ namespace WebApi2.RedisOutputCache
                 .ToArray();
         }
 
+        [Obsolete("Marked for removal.")]
         private string GetValue(object val)
         {
             if (val is IEnumerable && !(val is string))
@@ -147,6 +185,7 @@ namespace WebApi2.RedisOutputCache
             return val.ToString();
         }
 
+        [Obsolete("Marked for removal.")]
         private string GetJsonpCallbackValue(HttpRequestMessage request)
         {
             var callback = string.Empty;
@@ -168,6 +207,7 @@ namespace WebApi2.RedisOutputCache
             return callback;
         }
 
+        [Obsolete("Marked for removal.")]
         private string RemoveJsonpCallback(string parameters, string callback)
         {
             if (parameters.Contains("&" + callback))
@@ -192,5 +232,7 @@ namespace WebApi2.RedisOutputCache
 
             return parameters;
         }
+
+        #endregion
     }
 }
