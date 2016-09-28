@@ -1,5 +1,7 @@
-ASP.NET Web API CacheOutput
-========================
+ASP.NET Web API Output Caching backed by redis
+==============================================
+
+**NOTE** This is the original README. Documentation for the redis version is forthcoming.
 
 A small library bringing caching options, similar to MVC's "OutputCacheAttribute", to Web API actions.
 
