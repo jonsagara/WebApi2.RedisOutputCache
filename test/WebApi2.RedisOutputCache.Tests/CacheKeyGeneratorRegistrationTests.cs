@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using Autofac;
@@ -109,6 +110,11 @@ namespace WebApi2.RedisOutputCache.Tests
                 Assert.Fail("This cache key generator should never be invoked");
                 return "fail";
             }
+
+            public Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class InternalRegisteredCacheKeyGenerator : ICacheKeyGenerator
@@ -123,6 +129,11 @@ namespace WebApi2.RedisOutputCache.Tests
             public string MakeCacheKey(HttpActionContext context, MediaTypeHeaderValue mediaType, bool excludeQueryString = false)
             {
                 return _key;
+            }
+
+            public Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered)
+            {
+                throw new NotImplementedException();
             }
         }
         #endregion

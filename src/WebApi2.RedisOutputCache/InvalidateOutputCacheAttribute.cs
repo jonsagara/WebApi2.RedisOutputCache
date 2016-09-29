@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using WebApi2.RedisOutputCache.Core.Extensions;
 
 namespace WebApi2.RedisOutputCache
 {
@@ -15,7 +16,7 @@ namespace WebApi2.RedisOutputCache
     /// Declaratively invalidate redis output cache, optionally restricted by one or more target action parameter names.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class InvalidateOutputCacheAttribute : BaseOutputCacheAttribute
+    public class InvalidateOutputCacheAttribute : BaseCacheAttribute
     {
         private static readonly ConcurrentDictionary<string, string[]> _targetActionParamsByType = new ConcurrentDictionary<string, string[]>();
 
@@ -108,7 +109,7 @@ namespace WebApi2.RedisOutputCache
 
             var theActionArg = actionExecutedContext.ActionContext.ActionArguments.Single(kvp => kvp.Key.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase));
 
-            await WebApiCache.IncrAsync(CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, GetValueAsString(theActionArg.Value)));
+            await WebApiCache.IncrAsync(CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString()));
         }
 
 

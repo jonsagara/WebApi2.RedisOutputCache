@@ -1,6 +1,9 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using WebApi2.RedisOutputCache.Core.Cache;
 
 namespace WebApi2.RedisOutputCache.Tests.TestControllers
 {
@@ -11,6 +14,11 @@ namespace WebApi2.RedisOutputCache.Tests.TestControllers
             public string MakeCacheKey(HttpActionContext context, MediaTypeHeaderValue mediaType, bool excludeQueryString = false)
             {
                 return "unregistered";
+            }
+
+            public Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered)
+            {
+                throw new NotImplementedException();
             }
         }
 

@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http.Controllers;
+using WebApi2.RedisOutputCache.Core.Cache;
 
 namespace WebApi2.RedisOutputCache
 {
@@ -48,6 +49,11 @@ namespace WebApi2.RedisOutputCache
 
             var cachekey = string.Format("{0}{1}:{2}", key, parameters, mediaType);
             return cachekey;
+        }
+
+        public Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered)
+        {
+            throw new NotImplementedException();
         }
 
         private string GetJsonpCallback(HttpRequestMessage request)

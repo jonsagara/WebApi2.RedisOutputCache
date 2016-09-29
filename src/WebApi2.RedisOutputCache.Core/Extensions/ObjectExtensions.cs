@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Linq;
 
-namespace WebApi2.RedisOutputCache
+namespace WebApi2.RedisOutputCache.Core.Extensions
 {
     /// <summary>
-    /// Common functionality for output caching-related attributes.
+    /// Extensions to System.Object.
     /// </summary>
-    public abstract class BaseOutputCacheAttribute : BaseCacheAttribute
+    public static class ObjectExtensions
     {
         /// <summary>
         /// If the value is an IEnumerable, but not a string, flatten it into a string. Otherwise, convert it
@@ -14,7 +14,7 @@ namespace WebApi2.RedisOutputCache
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        protected string GetValueAsString(object val)
+        public static string GetValueAsString(this object val)
         {
             if (val == null)
             {
