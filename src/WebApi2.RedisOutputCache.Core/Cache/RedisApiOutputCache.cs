@@ -25,16 +25,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             _redisDb = redisDb;
         }
 
-
-        /// <summary>
-        /// Not supported.
-        /// </summary>
-        /// <param name="key">The key identifying the redis SET that tracks dependent keys.</param>
-        public Task RemoveStartsWithAsync(string key)
-        {
-            throw new NotSupportedException("There is no good way to enumerate keys in redis.");
-        }
-
         /// <summary>
         /// Gets the specified key.
         /// </summary>
@@ -105,22 +95,6 @@ return redis.call('INCR', KEYS[1])
             }
 
             return default(long);
-        }
-
-        public async Task<string[]> GetSetMembersAsync(string key)
-        {
-            try
-            {
-                var result = await _redisDb.SetMembersAsync(key);
-                return result.Select(m => (string)m).ToArray();
-            }
-            catch (Exception ex)
-            {
-                // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in GetSetMembersAsync<T>(string) for key = {key}");
-            }
-
-            return new string[0];
         }
 
         public async Task<long> RemoveAsync(string[] keys)
@@ -199,21 +173,6 @@ return redis.call('INCR', KEYS[1])
             }
         }
 
-        public async Task<long> AddSetAsync(string key, string[] values)
-        {
-            try
-            {
-                return await _redisDb.SetAddAsync(key, values.Select(v => (RedisValue)v).ToArray());
-            }
-            catch (Exception ex)
-            {
-                // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in AddSetAsync(string, string[]) for key = {key}");
-            }
-
-            return default(long);
-        }
-
 
         #region Unsupported Properties and Methods
 
@@ -229,12 +188,12 @@ return redis.call('INCR', KEYS[1])
         }
 
         /// <summary>
-        /// Synchronous method not supported. Use RemoveStartsWithAsync&lt;T&gt; instead.
+        /// Method not supported. You should not use the KEYS command in production application code.
         /// </summary>
         /// <param name="key">The key identifying the redis SET that tracks dependent keys.</param>
         public void RemoveStartsWith(string key)
         {
-            throw new NotSupportedException("Synchronous method not supported. Use RemoveStartsWithAsync<T> instead.");
+            throw new NotSupportedException("Method not supported. You should not use the KEYS command in production application code.");
         }
 
         /// <summary>

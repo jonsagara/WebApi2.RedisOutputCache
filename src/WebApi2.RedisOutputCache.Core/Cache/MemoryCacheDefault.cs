@@ -21,11 +21,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             }
         }
 
-        public Task RemoveStartsWithAsync(string key)
-        {
-            throw new NotSupportedException();
-        }
-
         public virtual void RemoveStartsWith(string baseKey, string key)
         {
             // Doesn't make sense with the MemoryCacheDefault implementation. Just use the default behavior
@@ -87,16 +82,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         }
 
         public Task AddAsync(string key, object o, DateTimeOffset expiration, string dependsOnKey = null)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<long> AddSetAsync(string key, string[] values)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<string[]> GetSetMembersAsync(string key)
         {
             throw new NotSupportedException();
         }
