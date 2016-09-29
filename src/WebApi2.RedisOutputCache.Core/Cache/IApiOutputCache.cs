@@ -21,7 +21,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         Task<long> IncrAsync(string key);
 
         void Remove(string key);
-        Task<long> RemoveAsync(string[] keys);
 
         bool Contains(string key);
         Task<bool> ContainsAsync(string key);

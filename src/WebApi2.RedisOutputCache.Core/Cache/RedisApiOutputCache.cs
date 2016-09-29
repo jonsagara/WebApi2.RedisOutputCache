@@ -97,29 +97,6 @@ return redis.call('INCR', KEYS[1])
             return default(long);
         }
 
-        public async Task<long> RemoveAsync(string[] keys)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-
-            try
-            {
-                if (keys.Length > 0)
-                {
-                    return await _redisDb.KeyDeleteAsync(keys.Select(k => (RedisKey)k).ToArray());
-                }
-            }
-            catch (Exception ex)
-            {
-                // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in RemoveAsync<T>(string[]) for keys = '{string.Join(", ", keys)}'");
-            }
-
-            return 0L;
-        }
-
         /// <summary>
         /// Determines whether redis contains an element with the given key name.
         /// </summary>

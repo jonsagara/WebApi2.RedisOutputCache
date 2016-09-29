@@ -86,11 +86,6 @@ namespace WebApi2.RedisOutputCache.Core.Cache
             throw new NotSupportedException();
         }
 
-        public Task<long> RemoveAsync(string[] keys)
-        {
-            throw new NotSupportedException();
-        }
-
         public Task<long> GetOrIncrAsync(string key)
         {
             throw new NotImplementedException();
