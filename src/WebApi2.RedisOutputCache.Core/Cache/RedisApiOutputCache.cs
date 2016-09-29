@@ -27,30 +27,12 @@ namespace WebApi2.RedisOutputCache.Core.Cache
 
 
         /// <summary>
-        /// Remove the set identifying the base key. This effectively invalidates the cache for all related URLs.
+        /// Not supported.
         /// </summary>
         /// <param name="key">The key identifying the redis SET that tracks dependent keys.</param>
-        public async Task RemoveStartsWithAsync(string key)
+        public Task RemoveStartsWithAsync(string key)
         {
-            try
-            {
-                // SE.Redis's implementation of KEYS uses the cursor-based SCAN, which is dreadfully slow. Instead, use
-                //   a lua script to get the list of matching keys starting with the value of key.
-                const string luaScript_GetKeysStartingWith = "return redis.call('KEYS', ARGV[1] .. '*')";
-
-                var redisResult = await _redisDb.ScriptEvaluateAsync(luaScript_GetKeysStartingWith, null, new RedisValue[] { key });
-                var matchingKeys = (RedisValue[])redisResult;
-
-                if (matchingKeys.Length > 0)
-                {
-                    await _redisDb.KeyDeleteAsync(matchingKeys.Select(mk => (RedisKey)(string)mk).ToArray());
-                }
-            }
-            catch (Exception ex)
-            {
-                // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in RemoveStartsWithAsync(string) for key = {key}");
-            }
+            throw new NotSupportedException("There is no good way to enumerate keys in redis.");
         }
 
         /// <summary>
