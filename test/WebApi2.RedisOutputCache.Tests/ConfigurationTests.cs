@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Moq;
 using NUnit.Framework;
-using WebApi2.RedisOutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Caching;
 
 namespace WebApi2.RedisOutputCache.Tests
 {

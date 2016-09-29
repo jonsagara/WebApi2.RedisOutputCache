@@ -59,10 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\CacheExtensions.cs" />
-    <Compile Include="Cache\IApiOutputCache.cs" />
-    <Compile Include="Cache\MemoryCacheDefault.cs" />
-    <Compile Include="Cache\RedisApiOutputCache.cs" />
+    <Compile Include="Caching\CacheExtensions.cs" />
+    <Compile Include="Caching\IApiOutputCache.cs" />
+    <Compile Include="Caching\MemoryCacheDefault.cs" />
+    <Compile Include="Caching\RedisApiOutputCache.cs" />
     <Compile Include="Caching\VersionLocalCache.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />

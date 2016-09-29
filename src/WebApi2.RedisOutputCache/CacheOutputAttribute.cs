@@ -11,7 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using WebApi2.RedisOutputCache.Core;
-using WebApi2.RedisOutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Caching;
 using WebApi2.RedisOutputCache.Core.Time;
 
 namespace WebApi2.RedisOutputCache

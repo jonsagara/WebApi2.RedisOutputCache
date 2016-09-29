@@ -10,7 +10,7 @@ using Autofac.Integration.WebApi;
 using Moq;
 using NUnit.Framework;
 using WebApi2.RedisOutputCache.Core;
-using WebApi2.RedisOutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Caching;
 
 namespace WebApi2.RedisOutputCache.Tests
 {

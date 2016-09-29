@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using NLog;
 using StackExchange.Redis;
 
-namespace WebApi2.RedisOutputCache.Core.Cache
+namespace WebApi2.RedisOutputCache.Core.Caching
 {
     /// <summary>
     /// Redis-backed output cache for Web API.

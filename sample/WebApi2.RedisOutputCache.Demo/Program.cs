@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
-using WebApi2.RedisOutputCache.Core.Cache;
+using WebApi2.RedisOutputCache.Core.Caching;
 
 namespace WebApi2.RedisOutputCache.Demo
 {
