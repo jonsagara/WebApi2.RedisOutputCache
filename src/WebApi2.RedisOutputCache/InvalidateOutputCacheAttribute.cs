@@ -104,7 +104,10 @@ namespace WebApi2.RedisOutputCache
                 await WebApiCache.IncrAsync(controllerActionVersionKey);
 
                 // Notify other nodes that they should evict this item from their local caches.
-                await WebApiCache.NotifyInvalidateLocalCacheAsync(cacheConfig.GetRedisInvalidateLocalCacheChannel(), controllerActionVersionKey);
+                if (cacheConfig.IsLocalCachingEnabled)
+                {
+                    await WebApiCache.NotifySubscribedNodesToInvalidateLocalCacheAsync(cacheConfig.ChannelForNotificationsToInvalidateLocalCache, controllerActionVersionKey);
+                }
 
                 return;
             }
@@ -120,7 +123,10 @@ namespace WebApi2.RedisOutputCache
             await WebApiCache.IncrAsync(controllerActionArgVersionKey);
 
             // Notify other nodes that they should evict this item from their local caches.
-            await WebApiCache.NotifyInvalidateLocalCacheAsync(cacheConfig.GetRedisInvalidateLocalCacheChannel(), controllerActionArgVersionKey);
+            if (cacheConfig.IsLocalCachingEnabled)
+            {
+                await WebApiCache.NotifySubscribedNodesToInvalidateLocalCacheAsync(cacheConfig.ChannelForNotificationsToInvalidateLocalCache, controllerActionArgVersionKey);
+            }
         }
 
 

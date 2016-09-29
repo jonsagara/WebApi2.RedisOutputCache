@@ -53,16 +53,19 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             return default(T);
         }
 
-        public async Task<long> GetOrIncrAsync(string key)
+        public async Task<long> GetOrIncrAsync(string key, bool localCacheEnabled)
         {
             try
             {
-                // First check to see if we have the version in our local cache.
-                var value = VersionLocalCache.Default.Get<long?>(key);
-                if (value != null)
+                if (localCacheEnabled)
                 {
-                    // Great! We just avoided a network call.
-                    return value.Value;
+                    // First check to see if we have the version in our local cache.
+                    var value = VersionLocalCache.Default.Get<long?>(key);
+                    if (value != null)
+                    {
+                        // Great! We just avoided a network call.
+                        return value.Value;
+                    }
                 }
 
 
@@ -118,7 +121,7 @@ return redis.call('INCR', KEYS[1])
             return default(long);
         }
 
-        public async Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key)
+        public async Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key)
         {
             try
             {

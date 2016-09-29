@@ -130,7 +130,8 @@ namespace WebApi2.RedisOutputCache
                 .ToList();
 
             // Get the versions for the controller/action, and for each argument name/value.
-            var controllerActionVersionId = await GetControllerActionVersionIdAsync(cache, controllerLowered, actionLowered);
+            var cacheConfig = actionContext.Request.GetConfiguration().CacheOutputConfiguration();
+            var controllerActionVersionId = await GetControllerActionVersionIdAsync(cache, controllerLowered, actionLowered, cacheConfig.IsLocalCachingEnabled);
 
             var finalList = new List<string>();
 
@@ -141,7 +142,7 @@ namespace WebApi2.RedisOutputCache
                 // Get or create the argument name/value version from redis. It is scoped at the namespace/controller/action level, so 
                 //   it will be unique.
                 var key = CacheKey.ControllerActionArgumentVersion(controllerLowered, actionLowered, argNameLowered, argNameValue.Value);
-                var version = await cache.GetOrIncrAsync(key);
+                var version = await cache.GetOrIncrAsync(key, cacheConfig.IsLocalCachingEnabled);
 
                 finalList.Add(CacheKey.VersionedArgumentNameAndValue(argNameLowered, argNameValue.Value?.Trim(), version));
             }
@@ -195,9 +196,9 @@ namespace WebApi2.RedisOutputCache
             return false;
         }
 
-        private async Task<long> GetControllerActionVersionIdAsync(IApiOutputCache cache, string controllerLowered, string actionLowered)
+        private async Task<long> GetControllerActionVersionIdAsync(IApiOutputCache cache, string controllerLowered, string actionLowered, bool localCacheEnabled)
         {
-            return await cache.GetOrIncrAsync(CacheKey.ControllerActionVersion(controllerLowered, actionLowered));
+            return await cache.GetOrIncrAsync(CacheKey.ControllerActionVersion(controllerLowered, actionLowered), localCacheEnabled);
         }
 
         /// <summary>

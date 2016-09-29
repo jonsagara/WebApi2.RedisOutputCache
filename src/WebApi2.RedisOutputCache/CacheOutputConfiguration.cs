@@ -4,16 +4,63 @@ using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
+using NLog;
+using StackExchange.Redis;
 using WebApi2.RedisOutputCache.Core.Caching;
 
 namespace WebApi2.RedisOutputCache
 {
     public class CacheOutputConfiguration
     {
-        private const string RedisInvalidateLocalCacheChannelPrefixKey = "WebApi2.RedisOutputCache-InvalidateLocalCacheChannelPrefix";
-        private const string RedisInvalidateLocalCacheChannelPrefixDefault = "WebApi2.RedisOutputCache-InvalidateLocalCacheChannelPrefix-Default";
+        private const string IsLocalCachingEnabledKey = "NotificationsToInvalidateLocalCacheEnabled";
+        private const string ChannelPrefixForNotificationsToInvalidateLocalCacheKey = "WebApi2.RedisOutputCache-InvalidateLocalCacheChannelPrefix";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly HttpConfiguration _configuration;
+
+
+        /// <summary>
+        /// Returns true if the user set a pub/sub channel prefix, thus enabling local caching as an L1 cache, and also
+        /// enabling pub/sub communication with other web nodes for sending/receiving notifications to invalidate 
+        /// local caches; false otherwise.
+        /// </summary>
+        internal bool IsLocalCachingEnabled
+        {
+            get
+            {
+                object enabled;
+                if (_configuration.Properties.TryGetValue(IsLocalCachingEnabledKey, out enabled))
+                {
+                    return (bool)enabled;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the redis pub/sub channel used to send/receive notifications to invalidate local L1 caches.
+        /// </summary>
+        /// <returns></returns>
+        internal string ChannelForNotificationsToInvalidateLocalCache
+        {
+            get
+            {
+                if (!IsLocalCachingEnabled)
+                {
+                    throw new InvalidOperationException("Subscription to notifications to invalidate the local version cache are not enabled. Unable to retrieve the channel prefix.");
+                }
+
+                object val;
+                if (!_configuration.Properties.TryGetValue(ChannelPrefixForNotificationsToInvalidateLocalCacheKey, out val))
+                {
+                    throw new InvalidOperationException($"L1 local caching is enabled, but the user hasn't provided a pub/sub channel prefix for sending/receiving local cache invalidation notifications. The prefix is required for preventing collisions with other applications.");
+                }
+                
+                return $"{(string)val}-RedisOutputCache-Channel-InvalidateLocalCache";
+            }
+        }
 
         /// <summary>
         /// .ctor
@@ -40,9 +87,9 @@ namespace WebApi2.RedisOutputCache
         /// <typeparam name="T"></typeparam>
         /// <param name="provider"></param>
         public void RegisterCacheKeyGeneratorProvider<T>(Func<T> provider)
-            where T: ICacheKeyGenerator
+            where T : ICacheKeyGenerator
         {
-            _configuration.Properties.GetOrAdd(typeof (T), x => provider);
+            _configuration.Properties.GetOrAdd(typeof(T), x => provider);
         }
 
         /// <summary>
@@ -55,40 +102,34 @@ namespace WebApi2.RedisOutputCache
         }
 
         /// <summary>
-        /// Register a prefix for the redis pub/sub channel used to notify distributed nodes to invalidate a
-        /// key in their local caches. Use this to constrain notifications only to those apps who need them.
+        /// Subscribe to notifications from other nodes of this application. Those nodes will instruct us
+        /// to evict a version from local cache, if present.
         /// </summary>
-        /// <param name="prefix"></param>
-        public void RegisterRedisInvalidateLocalCacheChannelPrefix(string prefix)
+        /// <param name="channelPrefix">a prefix for the redis pub/sub channel used to notify distributed nodes to invalidate a
+        /// key in their local caches. Use this to constrain notifications only to those apps who need them.</param>
+        /// <param name="mux">Your application's ConnectionMultiplexer.</param>
+        public void EnableNotificationsToInvalidateLocalCache(string channelPrefix, ConnectionMultiplexer mux)
         {
-            if (string.IsNullOrWhiteSpace(prefix))
+            if (string.IsNullOrWhiteSpace(channelPrefix))
             {
-                throw new ArgumentException($"{nameof(prefix)} cannot be null or white space", nameof(prefix));
+                throw new ArgumentException($"{nameof(channelPrefix)} cannot be null or white space", nameof(channelPrefix));
             }
 
-            _configuration.Properties.GetOrAdd(RedisInvalidateLocalCacheChannelPrefixKey, prefix);
-        }
-
-        /// <summary>
-        /// Get the prefix of the redis pub/sub channel used to notify distributed web nodes that a cache key should
-        /// be invalidated in their local caches.
-        /// </summary>
-        /// <returns></returns>
-        public string GetRedisInvalidateLocalCacheChannel()
-        {
-            string prefix = null;
-
-            object val;
-            if (_configuration.Properties.TryGetValue(RedisInvalidateLocalCacheChannelPrefixKey, out val))
+            if (mux == null)
             {
-                prefix = (string)val;
-            }
-            else
-            {
-                prefix = RedisInvalidateLocalCacheChannelPrefixDefault;
+                throw new ArgumentNullException(nameof(mux));
             }
 
-            return $"{prefix}-RedisOutputCache-Channel-InvalidateLocalCache";
+            _configuration.Properties.GetOrAdd(ChannelPrefixForNotificationsToInvalidateLocalCacheKey, channelPrefix);
+            _configuration.Properties.GetOrAdd(IsLocalCachingEnabledKey, true);
+
+            mux.GetSubscriber().Subscribe(ChannelForNotificationsToInvalidateLocalCache, (ch, msg) =>
+            {
+                Logger.Trace($"Received pub/sub message to evict key '{msg}' from local cache. Channel: {ch}");
+
+                // Message is the key of the item we need to evict from our local cache.
+                VersionLocalCache.Default.Remove(msg);
+            });
         }
 
         public string MakeBaseCachekey(string controller, string action)
@@ -105,7 +146,7 @@ namespace WebApi2.RedisOutputCache
             var nameAttribs = method.Method.GetCustomAttributes(typeof(ActionNameAttribute), false);
             if (nameAttribs.Any())
             {
-                var actionNameAttrib = (ActionNameAttribute) nameAttribs.FirstOrDefault();
+                var actionNameAttrib = (ActionNameAttribute)nameAttribs.FirstOrDefault();
                 if (actionNameAttrib != null)
                 {
                     methodName = actionNameAttrib.Name;
@@ -123,7 +164,7 @@ namespace WebApi2.RedisOutputCache
         /// <returns></returns>
         public ICacheKeyGenerator GetCacheKeyGenerator(HttpRequestMessage request, Type generatorType)
         {
-            generatorType = generatorType ?? typeof (ICacheKeyGenerator);
+            generatorType = generatorType ?? typeof(ICacheKeyGenerator);
 
             object cache;
             _configuration.Properties.TryGetValue(generatorType, out cache);
@@ -138,8 +179,8 @@ namespace WebApi2.RedisOutputCache
 
             // If we have an instance return it. If not, try to instantiate the type via reflection. If that fails,
             //   return an instance of the default cache key generator.
-            return generator 
-                ?? TryActivateCacheKeyGenerator(generatorType) 
+            return generator
+                ?? TryActivateCacheKeyGenerator(generatorType)
                 ?? new DefaultCacheKeyGenerator();
         }
 
@@ -155,8 +196,8 @@ namespace WebApi2.RedisOutputCache
 
             var cacheFunc = cache as Func<IApiOutputCache>;
 
-            var cacheOutputProvider = cacheFunc != null 
-                ? cacheFunc() 
+            var cacheOutputProvider = cacheFunc != null
+                ? cacheFunc()
                 : request.GetDependencyScope().GetService(typeof(IApiOutputCache)) as IApiOutputCache ?? new MemoryCacheDefault();
 
             return cacheOutputProvider;

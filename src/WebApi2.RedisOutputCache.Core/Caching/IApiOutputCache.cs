@@ -15,8 +15,9 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         /// If the counter exists, get its current value. Otherwise, initialize to 1 and return it.
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="localCacheEnabled"></param>
         /// <returns></returns>
-        Task<long> GetOrIncrAsync(string key);
+        Task<long> GetOrIncrAsync(string key, bool localCacheEnabled);
 
         /// <summary>
         /// Increment by 1 the value associated with the specified key.
@@ -26,11 +27,11 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         Task<long> IncrAsync(string key);
 
         /// <summary>
-        /// Use redis pub/sub to notify distributed nodes that they should remove the key from their local caches.
+        /// Use redis pub/sub to notify distributed nodes that they should remove this key from their local caches.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key);
+        Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key);
 
         void Remove(string key);
 

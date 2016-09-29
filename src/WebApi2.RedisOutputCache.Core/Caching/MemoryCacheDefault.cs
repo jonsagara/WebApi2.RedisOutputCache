@@ -86,7 +86,7 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             throw new NotSupportedException();
         }
 
-        public Task<long> GetOrIncrAsync(string key)
+        public Task<long> GetOrIncrAsync(string key, bool localCacheEnabled)
         {
             throw new NotImplementedException();
         }
@@ -96,7 +96,7 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             throw new NotImplementedException();
         }
 
-        public Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key)
+        public Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key)
         {
             throw new NotImplementedException();
         }
