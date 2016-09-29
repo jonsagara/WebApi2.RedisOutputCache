@@ -102,13 +102,13 @@ namespace WebApi2.RedisOutputCache
         }
 
         /// <summary>
-        /// Subscribe to notifications from other nodes of this application. Those nodes will instruct us
+        /// Cache versions in memory, and subscribe to notifications from other nodes of this application. Those nodes will instruct us
         /// to evict a version from local cache, if present.
         /// </summary>
         /// <param name="channelPrefix">a prefix for the redis pub/sub channel used to notify distributed nodes to invalidate a
         /// key in their local caches. Use this to constrain notifications only to those apps who need them.</param>
         /// <param name="mux">Your application's ConnectionMultiplexer.</param>
-        public void EnableNotificationsToInvalidateLocalCache(string channelPrefix, ConnectionMultiplexer mux)
+        public void EnableLocalCaching(string channelPrefix, ConnectionMultiplexer mux)
         {
             if (string.IsNullOrWhiteSpace(channelPrefix))
             {
