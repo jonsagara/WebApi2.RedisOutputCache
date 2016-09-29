@@ -38,16 +38,5 @@
         {
             return $"{argumentNameLowered}={argumentValue}_v{argumentVersion}";
         }
-
-        /// <summary>
-        /// Creates a string like &quot;argname=argVal&quot;. This is used for query string parameters, which are not versioned.
-        /// </summary>
-        /// <param name="argumentNameLowered"></param>
-        /// <param name="argumentValue"></param>
-        /// <returns></returns>
-        public static string ArgumentNameAndValue(string argumentNameLowered, string argumentValue)
-        {
-            return $"{argumentNameLowered}={argumentValue}";
-        }
     }
 }
