@@ -82,6 +82,10 @@ namespace WebApi2.RedisOutputCache.Core.Cache
         {
             try
             {
+                #region Lua script
+
+                // This script returns the value if it exists. If it does not, it initializes the value to 1, and 
+                //   returns that.
                 const string luaScript = @"
 local genId = redis.call('GET', KEYS[1])
 if genId ~= false then
@@ -90,8 +94,12 @@ end
 
 return redis.call('INCR', KEYS[1])
 ";
+                #endregion
+
+                // SE.Redis helpfully notices that we're repeatedly using the same script, loads it into
+                //   redis, and thereafter references it by its SHA1, saving us bandwidth.
                 var result = await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
-                return (int)result;
+                return (long)result;
             }
             catch (Exception ex)
             {

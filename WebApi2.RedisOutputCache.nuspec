@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>WebApi2.RedisOutputCache</id>
-    <version>1.0.0</version>
+    <version>1.0.1-beta</version>
     <authors>Filip W, Jon Sagara</authors>
     <owners>jonsagara</owners>
     <licenseUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache/blob/dev/License.txt</licenseUrl>
     <projectUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A fork of Strathweb.CacheOutput.WebApi2, with support for redis.</description>
-    <releaseNotes>Added naïve KEYS-based caching with redis as the data store.</releaseNotes>
+    <releaseNotes>Now uses an O(1) INCR-based cache invalidation strategy for the catch-all output caching attribute.</releaseNotes>
     <copyright>Copyright 2013-2016 Filip Wojcieszyn, Alexandre Brisebois, Jon Sagara</copyright>
     <tags>aspnet webapi aspnetwebapi redis cache caching outputcache outputcaching</tags>
     <dependencies>
@@ -21,10 +21,8 @@
     </dependencies>
   </metadata>
   <files>
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.dll" target="lib\net45\" />
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.pdb" target="lib\net45\" />
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.xml" target="lib\net45\" />
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.Core.dll" target="lib\net45\" />
-      <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.Core.pdb" target="lib\net45\" />
-    </files>
+    <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.*" target="lib\net45\" />
+    <file src="src\**\*.cs" target="src" />
+    <file src="src\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs" target="content\Filters" />
+  </files>
 </package>
