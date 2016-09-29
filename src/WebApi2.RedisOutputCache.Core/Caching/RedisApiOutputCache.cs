@@ -57,10 +57,24 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         {
             try
             {
+                // First check to see if we have the version in our local cache.
+                var value = VersionLocalCache.Default.Get<long?>(key);
+                if (value != null)
+                {
+                    // Great! We just avoided a network call.
+                    return value.Value;
+                }
+
+
+                // We dont' have the version cached. Get it from redis (or create it if it doesn't exist).
+
                 #region Lua script
 
                 // This script returns the value if it exists. If it does not, it initializes the value to 1, and 
                 //   returns that.
+                //
+                // SE.Redis helpfully notices that we're repeatedly using the same script, loads it into
+                //   redis, and thereafter references it by its SHA1, saving us bandwidth.
                 const string luaScript = @"
 local genId = redis.call('GET', KEYS[1])
 if genId ~= false then
@@ -70,11 +84,15 @@ end
 return redis.call('INCR', KEYS[1])
 ";
                 #endregion
+                
+                var redisResult = await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
+                var result = (long)redisResult;
 
-                // SE.Redis helpfully notices that we're repeatedly using the same script, loads it into
-                //   redis, and thereafter references it by its SHA1, saving us bandwidth.
-                var result = await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
-                return (long)result;
+                if (result != 0L)
+                {
+                    // Add it to the local cache so that we can avoid a network call next time.
+                    VersionLocalCache.Default.Add(key, result);
+                }
             }
             catch (Exception ex)
             {
@@ -95,6 +113,26 @@ return redis.call('INCR', KEYS[1])
             {
                 // Don't let cache server unavailability bring down the app.
                 Logger.Error(ex, $"Unhandled exception in IncrAsync<long>(string) for key = {key}");
+            }
+
+            return default(long);
+        }
+
+        public async Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key)
+        {
+            try
+            {
+                // Remove it from our local cache.
+                VersionLocalCache.Default.Remove(key);
+
+                // Notify any subscribers that they should evict this item from their local caches.
+                return await _redisPubSub.PublishAsync(channel, key);
+            }
+            catch(Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                //TODO: retry?
+                Logger.Error(ex, $"Unhandled exception in NotifyInvalidateLocalCacheAsync(string, string) for channel = {channel}, key = {key}");
             }
 
             return default(long);

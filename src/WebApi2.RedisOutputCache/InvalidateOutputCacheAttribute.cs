@@ -83,7 +83,10 @@ namespace WebApi2.RedisOutputCache
                 return;
             }
 
-            EnsureCache(actionExecutedContext.Request.GetConfiguration(), actionExecutedContext.Request);
+            var config = actionExecutedContext.Request.GetConfiguration();
+            var cacheConfig = config.CacheOutputConfiguration();
+
+            EnsureCache(config, actionExecutedContext.Request);
 
 
             //
@@ -97,7 +100,11 @@ namespace WebApi2.RedisOutputCache
             {
                 // The target action has no parameters, or the attributed action didn't specify a parameter by which to 
                 //   invalidate, so we're going to invalidate at the controller/action level.
-                await WebApiCache.IncrAsync(CacheKey.ControllerActionVersion(_targetControllerLowered, _targetActionLowered));
+                var controllerActionVersionKey = CacheKey.ControllerActionVersion(_targetControllerLowered, _targetActionLowered);
+                await WebApiCache.IncrAsync(controllerActionVersionKey);
+
+                // Notify other nodes that they should evict this item from their local caches.
+                await WebApiCache.NotifyInvalidateLocalCacheAsync(cacheConfig.GetRedisInvalidateLocalCacheChannel(), controllerActionVersionKey);
 
                 return;
             }
@@ -109,7 +116,11 @@ namespace WebApi2.RedisOutputCache
 
             var theActionArg = actionExecutedContext.ActionContext.ActionArguments.Single(kvp => kvp.Key.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase));
 
-            await WebApiCache.IncrAsync(CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString()));
+            var controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString());
+            await WebApiCache.IncrAsync(controllerActionArgVersionKey);
+
+            // Notify other nodes that they should evict this item from their local caches.
+            await WebApiCache.NotifyInvalidateLocalCacheAsync(cacheConfig.GetRedisInvalidateLocalCacheChannel(), controllerActionArgVersionKey);
         }
 
 

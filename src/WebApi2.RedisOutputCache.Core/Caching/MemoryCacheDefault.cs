@@ -96,6 +96,11 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             throw new NotImplementedException();
         }
 
+        public Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<string> AllKeys
         {
             get

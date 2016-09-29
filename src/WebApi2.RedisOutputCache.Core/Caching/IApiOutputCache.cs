@@ -18,7 +18,19 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         /// <returns></returns>
         Task<long> GetOrIncrAsync(string key);
 
+        /// <summary>
+        /// Increment by 1 the value associated with the specified key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         Task<long> IncrAsync(string key);
+
+        /// <summary>
+        /// Use redis pub/sub to notify distributed nodes that they should remove the key from their local caches.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        Task<long> NotifyInvalidateLocalCacheAsync(string channel, string key);
 
         void Remove(string key);
 
