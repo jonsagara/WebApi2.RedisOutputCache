@@ -13,15 +13,19 @@ namespace WebApi2.RedisOutputCache.Core.Cache
     public class RedisApiOutputCache : IApiOutputCache
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IDatabase _redisDb;
+        private readonly ISubscriber _redisPubSub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisApiOutputCache" /> class.
         /// </summary>
         /// <param name="redisDb">The redis cache.</param>
-        public RedisApiOutputCache(IDatabase redisDb)
+        /// <param name="redisPubSub"></param>
+        public RedisApiOutputCache(IDatabase redisDb, ISubscriber redisPubSub)
         {
             _redisDb = redisDb;
+            _redisPubSub = redisPubSub;
         }
 
         /// <summary>

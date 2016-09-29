@@ -69,6 +69,7 @@
     <Compile Include="InvalidateOutputCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CacheOutputAttribute.cs" />
+    <Compile Include="RedisChannel.cs" />
     <Compile Include="TimeAttributes\CacheOutputUntilCacheAttribute.cs" />
     <Compile Include="TimeAttributes\CacheOutputUntilThisMonthAttribute.cs" />
     <Compile Include="TimeAttributes\CacheOutputUntilThisYearAttribute.cs" />

@@ -63,6 +63,7 @@
     <Compile Include="Cache\IApiOutputCache.cs" />
     <Compile Include="Cache\MemoryCacheDefault.cs" />
     <Compile Include="Cache\RedisApiOutputCache.cs" />
+    <Compile Include="Caching\VersionLocalCache.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IModelQuery.cs" />
@@ -78,9 +79,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Caching\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
