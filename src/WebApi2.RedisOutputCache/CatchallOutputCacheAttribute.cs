@@ -15,6 +15,15 @@ using WebApi2.RedisOutputCache.Core.Time;
 
 namespace WebApi2.RedisOutputCache
 {
+    /***
+     * 
+     * ATTENTION NUGET PACKAGE USERS:
+     * 
+     * DO NOT MODIFY THIS FILE. IT IS INCLUDED SOLELY FOR DEBUGGING PURPOSES WHILE WE WORK OUT THE KINKS.
+     * 
+     * 
+     ***/
+
     /// <summary>
     /// <para>Cache output of GET requests. The controller/action and each of the action's arguments have a version
     /// number associated with them that can be independently INCRemented in redis to invalidate a different 

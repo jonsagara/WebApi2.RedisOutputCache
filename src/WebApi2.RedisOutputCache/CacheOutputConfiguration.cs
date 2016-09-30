@@ -123,6 +123,8 @@ namespace WebApi2.RedisOutputCache
             _configuration.Properties.GetOrAdd(ChannelPrefixForNotificationsToInvalidateLocalCacheKey, channelPrefix);
             _configuration.Properties.GetOrAdd(IsLocalCachingEnabledKey, true);
 
+            // Subscribe to the channel that will receive notifications from other application nodes to invalidate
+            //   this instance's local cache.
             mux.GetSubscriber().Subscribe(ChannelForNotificationsToInvalidateLocalCache, (ch, msg) =>
             {
                 Logger.Trace($"Received pub/sub message to evict key '{msg}' from local cache. Channel: {ch}");

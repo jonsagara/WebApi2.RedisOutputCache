@@ -88,14 +88,12 @@ return redis.call('INCR', KEYS[1])
 ";
                 #endregion
                 
-                var redisResult = await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
-                var result = (long)redisResult;
+                var version = (long)await _redisDb.ScriptEvaluateAsync(luaScript, new RedisKey[] { key });
+                
+                // Add it to the local cache so that we can avoid a network call next time.
+                VersionLocalCache.Default.Add(key, version);
 
-                if (result != 0L)
-                {
-                    // Add it to the local cache so that we can avoid a network call next time.
-                    VersionLocalCache.Default.Add(key, result);
-                }
+                return version;
             }
             catch (Exception ex)
             {
