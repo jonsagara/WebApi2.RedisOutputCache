@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
@@ -10,6 +9,9 @@ using WebApi2.RedisOutputCache.Core.Caching;
 
 namespace WebApi2.RedisOutputCache
 {
+    /// <summary>
+    /// A class that lets consuming code configure the behavior of output caching.
+    /// </summary>
     public class CacheOutputConfiguration
     {
         private const string IsLocalCachingEnabledKey = "NotificationsToInvalidateLocalCacheEnabled";
@@ -132,30 +134,6 @@ namespace WebApi2.RedisOutputCache
                 // Message is the key of the item we need to evict from our local cache.
                 VersionLocalCache.Default.Remove(msg);
             });
-        }
-
-        public string MakeBaseCachekey(string controller, string action)
-        {
-            return string.Format("{0}-{1}", controller.ToLower(), action.ToLower());
-        }
-
-        public string MakeBaseCachekey<T, U>(Expression<Func<T, U>> expression)
-        {
-            var method = expression.Body as MethodCallExpression;
-            if (method == null) throw new ArgumentException("Expression is wrong");
-
-            var methodName = method.Method.Name;
-            var nameAttribs = method.Method.GetCustomAttributes(typeof(ActionNameAttribute), false);
-            if (nameAttribs.Any())
-            {
-                var actionNameAttrib = (ActionNameAttribute)nameAttribs.FirstOrDefault();
-                if (actionNameAttrib != null)
-                {
-                    methodName = actionNameAttrib.Name;
-                }
-            }
-
-            return string.Format("{0}-{1}", typeof(T).FullName.ToLower(), methodName.ToLower());
         }
 
         /// <summary>

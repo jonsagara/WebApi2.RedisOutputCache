@@ -22,8 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\WebApi2.RedisOutputCache.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -73,7 +72,6 @@
     <Compile Include="IgnoreCacheOutputAttribute.cs" />
     <Compile Include="InvalidateOutputCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RedisChannel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebApi2.RedisOutputCache.Core\WebApi2.RedisOutputCache.Core.csproj">

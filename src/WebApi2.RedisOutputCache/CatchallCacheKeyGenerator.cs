@@ -13,13 +13,13 @@ using WebApi2.RedisOutputCache.Core.Extensions;
 
 namespace WebApi2.RedisOutputCache
 {
+    /// <summary>
+    /// Used by the <see cref="CatchallOutputCacheAttribute"/> to generate cache keys. It uses the full controller name,
+    /// the action, and name/value pairs for action arguments. Query strings parameters that do not map to an action
+    /// parameter are not included.
+    /// </summary>
     public class CatchallCacheKeyGenerator : ICacheKeyGenerator
     {
-        public string MakeCacheKey(HttpActionContext context, MediaTypeHeaderValue mediaType, bool excludeQueryString = false)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Generates a cache key containing the namespace/controller/action, and name/value pairs for action arguments.
         /// Query string parameters that do not map to an action parameter are not included.

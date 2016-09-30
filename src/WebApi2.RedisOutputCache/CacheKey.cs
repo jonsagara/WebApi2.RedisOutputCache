@@ -1,5 +1,8 @@
 ﻿namespace WebApi2.RedisOutputCache
 {
+    /// <summary>
+    /// Helper class for creating common cache keys.
+    /// </summary>
     public static class CacheKey
     {
         /// <summary>
@@ -32,7 +35,7 @@
         /// </summary>
         /// <param name="argumentNameLowered"></param>
         /// <param name="argumentValue"></param>
-        /// <param name="version"></param>
+        /// <param name="argumentVersion"></param>
         /// <returns></returns>
         public static string VersionedArgumentNameAndValue(string argumentNameLowered, string argumentValue, long argumentVersion)
         {
