@@ -3,11 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebApi2.RedisOutputCache.TimeAttributes;
 
 namespace WebApi2.RedisOutputCache.Demo
 {
-    [AutoInvalidateCacheOutput]
+    //[AutoInvalidateCacheOutput]
     public class Teams2Controller : ApiController
     {
         private static readonly List<Team> Teams = new List<Team>
@@ -16,20 +15,20 @@ namespace WebApi2.RedisOutputCache.Demo
                 new Team {Id = 2, League = "NHL", Name = "Habs"},
             };
 
-        [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
-        public IEnumerable<Team> Get()
-        {
-            return Teams;
-        }
+        //[CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+        //public IEnumerable<Team> Get()
+        //{
+        //    return Teams;
+        //}
 
-        [CacheOutputUntil(2014, 7, 20)]
-        public Team GetById(int id)
-        {
-            var team = Teams.FirstOrDefault(i => i.Id == id);
-            if (team == null) throw new HttpResponseException(HttpStatusCode.NotFound);
+        //[CacheOutputUntil(2014, 7, 20)]
+        //public Team GetById(int id)
+        //{
+        //    var team = Teams.FirstOrDefault(i => i.Id == id);
+        //    if (team == null) throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return team;
-        }
+        //    return team;
+        //}
 
         public void Post(Team value)
         {

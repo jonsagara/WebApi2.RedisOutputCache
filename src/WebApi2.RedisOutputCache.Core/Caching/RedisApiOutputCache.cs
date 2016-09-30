@@ -168,28 +168,25 @@ return redis.call('INCR', KEYS[1])
         /// <param name="value">The value.</param>
         /// <param name="expiration">The expiration.</param>
         /// <param name="dependsOnKey">The depends on key.</param>
-        public async Task AddAsync(string key, object value, DateTimeOffset expiration, string dependsOnKey = null)
+        public async Task<bool> AddAsync(string key, object value, DateTimeOffset expiration)
         {
             if (Equals(value, string.Empty))
             {
                 // No reason to store an empty string.
-                return;
+                return false;
             }
 
             try
             {
-                var primaryAdded = await _redisDb.StringSetAsync(key, JsonConvert.SerializeObject(value), expiration.Subtract(DateTimeOffset.Now));
-
-                if (dependsOnKey != null && primaryAdded)
-                {
-                    await _redisDb.SetAddAsync(dependsOnKey, key);
-                }
+                return await _redisDb.StringSetAsync(key, JsonConvert.SerializeObject(value), expiration.Subtract(DateTimeOffset.Now));
             }
             catch (Exception ex)
             {
                 // Don't let cache server unavailability bring down the app.
-                Logger.Error(ex, $"Unhandled exception in AddAsync(string, object, DateTimeOffset, string) for key = {key} and dependsOnKey = {dependsOnKey}");
+                Logger.Error(ex, $"Unhandled exception in AddAsync(string, object, DateTimeOffset, string) for key = {key}");
             }
+
+            return false;
         }
 
 

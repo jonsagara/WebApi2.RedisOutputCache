@@ -183,7 +183,7 @@ namespace WebApi2.RedisOutputCache
             //   return an instance of the default cache key generator.
             return generator
                 ?? TryActivateCacheKeyGenerator(generatorType)
-                ?? new DefaultCacheKeyGenerator();
+                ?? new CatchallCacheKeyGenerator();
         }
 
         /// <summary>
@@ -200,7 +200,12 @@ namespace WebApi2.RedisOutputCache
 
             var cacheOutputProvider = cacheFunc != null
                 ? cacheFunc()
-                : request.GetDependencyScope().GetService(typeof(IApiOutputCache)) as IApiOutputCache ?? new MemoryCacheDefault();
+                : request.GetDependencyScope().GetService(typeof(IApiOutputCache)) as IApiOutputCache;
+
+            if (cacheOutputProvider == null)
+            {
+                throw new InvalidOperationException("Unable to obtain an IApiOutputCache instance");
+            }
 
             return cacheOutputProvider;
         }

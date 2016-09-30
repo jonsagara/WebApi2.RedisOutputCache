@@ -3,7 +3,7 @@ using System.Web.Http;
 
 namespace WebApi2.RedisOutputCache.Demo
 {
-    [CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
+    //[CacheOutput(ClientTimeSpan = 50, ServerTimeSpan = 50)]
     [RoutePrefix("ignore")]
     public class IgnoreController : ApiController
     {

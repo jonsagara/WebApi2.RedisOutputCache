@@ -7,8 +7,6 @@ namespace WebApi2.RedisOutputCache
 {
     public interface ICacheKeyGenerator
     {
-        string MakeCacheKey(HttpActionContext context, MediaTypeHeaderValue mediaType, bool excludeQueryString = false);
-
         Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered);
     }
 }

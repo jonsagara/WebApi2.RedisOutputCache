@@ -9,22 +9,23 @@ namespace WebApi2.RedisOutputCache.Demo
     {
         static void Main(string[] args)
         {
-            var config = new HttpSelfHostConfiguration("http://localhost:999");
-            config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(
-                  name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-            var server = new HttpSelfHostServer(config);
+#warning TODO: redis
+            //var config = new HttpSelfHostConfiguration("http://localhost:999");
+            //config.MapHttpAttributeRoutes();
+            //config.Routes.MapHttpRoute(
+            //      name: "DefaultApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+            //var server = new HttpSelfHostServer(config);
 
-            config.CacheOutputConfiguration().RegisterCacheOutputProvider(() => new MemoryCacheDefault());
+            //config.CacheOutputConfiguration().RegisterCacheOutputProvider(() => new MemoryCacheDefault());
 
-            server.OpenAsync().Wait();
+            //server.OpenAsync().Wait();
 
-            Console.ReadKey();
+            //Console.ReadKey();
 
-            server.CloseAsync().Wait();
+            //server.CloseAsync().Wait();
         }
     }
 }
