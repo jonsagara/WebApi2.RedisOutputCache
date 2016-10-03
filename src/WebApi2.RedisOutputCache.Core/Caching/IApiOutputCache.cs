@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebApi2.RedisOutputCache.Core.Caching
@@ -21,14 +20,7 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<long> IncrAsync(string key);
-
-        /// <summary>
-        /// Use redis pub/sub to notify distributed nodes that they should remove this key from their local caches.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key);
+        Task<long> IncrAsync(string key, string localCacheNotificationChannel = null);
 
         Task<bool> ContainsAsync(string key);
 

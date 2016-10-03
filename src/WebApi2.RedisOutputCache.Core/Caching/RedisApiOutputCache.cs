@@ -104,36 +104,25 @@ return redis.call('INCR', KEYS[1])
             return default(long);
         }
 
-        public async Task<long> IncrAsync(string key)
+        public async Task<long> IncrAsync(string key, string localCacheNotificationChannel = null)
         {
             try
             {
-                return await _redisDb.StringIncrementAsync(key);
+                var newId = await _redisDb.StringIncrementAsync(key);
+
+                if (!string.IsNullOrWhiteSpace(localCacheNotificationChannel))
+                {
+                    // Publish a notification to the specified channel that all subscribers should evict the
+                    //   key from their local caches.
+                    await NotifySubscribedNodesToInvalidateLocalCacheAsync(localCacheNotificationChannel, key);
+                }
+
+                return newId;
             }
             catch (Exception ex)
             {
                 // Don't let cache server unavailability bring down the app.
                 Logger.Error(ex, $"Unhandled exception in IncrAsync<long>(string) for key = {key}");
-            }
-
-            return default(long);
-        }
-
-        public async Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key)
-        {
-            try
-            {
-                // Remove it from our local cache.
-                VersionLocalCache.Default.Remove(key);
-
-                // Notify any subscribers that they should evict this item from their local caches.
-                return await _redisPubSub.PublishAsync(channel, key);
-            }
-            catch(Exception ex)
-            {
-                // Don't let cache server unavailability bring down the app.
-                //TODO: retry?
-                Logger.Error(ex, $"Unhandled exception in NotifyInvalidateLocalCacheAsync(string, string) for channel = {channel}, key = {key}");
             }
 
             return default(long);
@@ -190,70 +179,30 @@ return redis.call('INCR', KEYS[1])
         }
 
 
-        #region Unsupported Properties and Methods
-
         /// <summary>
-        /// Not supported. The redis KEYS command is expensive. Find another way to do what you're trying to do.
+        /// Use redis pub/sub to notify distributed nodes that they should remove this key from their local caches.
         /// </summary>
-        public IEnumerable<string> AllKeys
+        /// <param name="channel"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private async Task<long> NotifySubscribedNodesToInvalidateLocalCacheAsync(string channel, string key)
         {
-            get
+            try
             {
-                throw new NotSupportedException("The redis KEYS command is expensive. Find another way to do what you're trying to do.");
+                // Remove it from our local cache.
+                VersionLocalCache.Default.Remove(key);
+
+                // Notify any subscribers that they should evict this item from their local caches.
+                return await _redisPubSub.PublishAsync(channel, key);
             }
-        }
+            catch (Exception ex)
+            {
+                // Don't let cache server unavailability bring down the app.
+                //TODO: retry?
+                Logger.Error(ex, $"Unhandled exception in NotifyInvalidateLocalCacheAsync(string, string) for channel = {channel}, key = {key}");
+            }
 
-        /// <summary>
-        /// Method not supported. You should not use the KEYS command in production application code.
-        /// </summary>
-        /// <param name="key">The key identifying the redis SET that tracks dependent keys.</param>
-        public void RemoveStartsWith(string key)
-        {
-            throw new NotSupportedException("Method not supported. You should not use the KEYS command in production application code.");
+            return default(long);
         }
-
-        /// <summary>
-        /// Synchronous method not supported. Use GetAsync&lt;T&gt; instead
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public T Get<T>(string key) where T : class
-        {
-            throw new NotSupportedException("Synchronous method not supported. Use GetAsync<T> instead.");
-        }
-
-        /// <summary>
-        /// Removes the specified key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        public void Remove(string key)
-        {
-            throw new NotImplementedException("Method not used by the redis provider.");
-        }
-
-        /// <summary>
-        /// Synchronous method not supported. Use ContainsAsync&lt;T&gt; instead.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public bool Contains(string key)
-        {
-            throw new NotSupportedException("Synchronous method not supported. Use ContainsAsync<T> instead.");
-        }
-
-        /// <summary>
-        /// Synchronous method not supported. Use AddAsync instead.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="expiration">The expiration.</param>
-        /// <param name="dependsOnKey">The depends on key.</param>
-        public void Add(string key, object value, DateTimeOffset expiration, string dependsOnKey = null)
-        {
-            throw new NotSupportedException("Synchronous method not supported. Use AddAsync instead.");
-        }
-
-        #endregion
     }
 }

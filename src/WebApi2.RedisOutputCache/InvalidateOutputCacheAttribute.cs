@@ -96,18 +96,17 @@ namespace WebApi2.RedisOutputCache
             //   * We have access to the attributed action argument's value.
             //
 
+            // If local caching is enabled, we'll notify other nodes that they should evict this item from their local caches.
+            var localCacheNotificationChannel = cacheConfig.IsLocalCachingEnabled
+                ? cacheConfig.ChannelForNotificationsToInvalidateLocalCache
+                : null;
+
             if (_targetActionParamsLowered.Count == 0 || string.IsNullOrWhiteSpace(_invalidateByParamLowered))
             {
                 // The target action has no parameters, or the attributed action didn't specify a parameter by which to 
                 //   invalidate, so we're going to invalidate at the controller/action level.
                 var controllerActionVersionKey = CacheKey.ControllerActionVersion(_targetControllerLowered, _targetActionLowered);
-                await WebApiCache.IncrAsync(controllerActionVersionKey);
-
-                // Notify other nodes that they should evict this item from their local caches.
-                if (cacheConfig.IsLocalCachingEnabled)
-                {
-                    await WebApiCache.NotifySubscribedNodesToInvalidateLocalCacheAsync(cacheConfig.ChannelForNotificationsToInvalidateLocalCache, controllerActionVersionKey);
-                }
+                await WebApiCache.IncrAsync(controllerActionVersionKey, localCacheNotificationChannel);
 
                 return;
             }
@@ -120,13 +119,7 @@ namespace WebApi2.RedisOutputCache
             var theActionArg = actionExecutedContext.ActionContext.ActionArguments.Single(kvp => kvp.Key.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase));
 
             var controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString());
-            await WebApiCache.IncrAsync(controllerActionArgVersionKey);
-
-            // Notify other nodes that they should evict this item from their local caches.
-            if (cacheConfig.IsLocalCachingEnabled)
-            {
-                await WebApiCache.NotifySubscribedNodesToInvalidateLocalCacheAsync(cacheConfig.ChannelForNotificationsToInvalidateLocalCache, controllerActionArgVersionKey);
-            }
+            await WebApiCache.IncrAsync(controllerActionArgVersionKey, localCacheNotificationChannel);
         }
 
 
