@@ -40,9 +40,10 @@ namespace WebApi2.RedisOutputCache
         private const string CurrentRequestMediaType = nameof(CatchallOutputCacheAttribute) + ":CurrentRequestMediaType";
 
         /// <summary>
-        /// Don't compute this twice if we don't have to. Create in OnActionExecuting, reference in OnActionExecuted.
+        /// Don't compute this twice if we don't have to. Create in OnActionExecuting, store in HttpContext.Items, 
+        /// reference again in OnActionExecuted.
         /// </summary>
-        private string _fullCacheKey;
+        private const string FullCacheKey = nameof(CatchallOutputCacheAttribute) + ":FullCacheKey";
 
 
         #region Properties and fields copied from CacheOutputAttribute
@@ -127,16 +128,17 @@ namespace WebApi2.RedisOutputCache
             //
 
             var cacheKeyGenerator = config.CacheOutputConfiguration().GetCacheKeyGenerator(actionContext.Request, typeof(CatchallCacheKeyGenerator));
-            _fullCacheKey = await cacheKeyGenerator.MakeCacheKeyAsync(WebApiCache, actionContext, responseMediaType, controllerLowered, actionLowered);
+            var fullCacheKey = await cacheKeyGenerator.MakeCacheKeyAsync(WebApiCache, actionContext, responseMediaType, controllerLowered, actionLowered);
+            actionContext.Request.Properties[FullCacheKey] = fullCacheKey;
 
-            if (!(await WebApiCache.ContainsAsync(_fullCacheKey)))
+            if (!(await WebApiCache.ContainsAsync(fullCacheKey)))
             {
                 // Output for this action with these parameters is not in the cache, so we can't short circuit the request. Let it continue.
                 return;
             }
 
             // Check to see if we have any cached requests that match by ETag.
-            var etagCacheKey = _fullCacheKey + Constants.EtagKey;
+            var etagCacheKey = fullCacheKey + Constants.EtagKey;
 
             if (actionContext.Request.Headers.IfNoneMatch != null)
             {
@@ -159,7 +161,7 @@ namespace WebApi2.RedisOutputCache
             }
 
             // No matching ETags. See if we have the actual response bytes cached.
-            var val = await WebApiCache.GetAsync<byte[]>(_fullCacheKey);
+            var val = await WebApiCache.GetAsync<byte[]>(fullCacheKey);
             if (val == null)
             {
                 // No response bytes cached for this action/parameters. Let the request continue.
@@ -174,13 +176,13 @@ namespace WebApi2.RedisOutputCache
             // Get the content type for the request. MediaTypeHeaderValue is not serializable (it deserializes in a 
             //   very strange state with duplicate charset attributes), so we're going cache it as a string and
             //   then parse it here.
-            var contentTypeCached = await WebApiCache.GetAsync<string>(_fullCacheKey + Constants.ContentTypeKey);
+            var contentTypeCached = await WebApiCache.GetAsync<string>(fullCacheKey + Constants.ContentTypeKey);
 
             MediaTypeHeaderValue contentType;
             if (!MediaTypeHeaderValue.TryParse(contentTypeCached, out contentType))
             {
                 // That didn't work. Extract it from the cache key.
-                contentType = new MediaTypeHeaderValue(GetMediaTypeFromFullCacheKey(_fullCacheKey));
+                contentType = new MediaTypeHeaderValue(GetMediaTypeFromFullCacheKey(fullCacheKey));
             }
 
             // Create a new response and populated it with the cached bytes.
@@ -226,8 +228,9 @@ namespace WebApi2.RedisOutputCache
                 var httpConfig = actionExecutedContext.Request.GetConfiguration();
                 var config = httpConfig.CacheOutputConfiguration();
                 var responseMediaType = actionExecutedContext.Request.Properties[CurrentRequestMediaType] as MediaTypeHeaderValue ?? GetExpectedMediaType(httpConfig, actionExecutedContext.ActionContext);
+                var fullCacheKey = actionExecutedContext.Request.Properties[FullCacheKey] as string;
 
-                if (!string.IsNullOrWhiteSpace(_fullCacheKey) && !(await WebApiCache.ContainsAsync(_fullCacheKey)))
+                if (!string.IsNullOrWhiteSpace(fullCacheKey) && !(await WebApiCache.ContainsAsync(fullCacheKey)))
                 {
                     // Add an ETag to the response.
                     SetEtag(actionExecutedContext.Response, CreateEtag());
@@ -242,9 +245,9 @@ namespace WebApi2.RedisOutputCache
                         responseContent.Headers.Remove("Content-Length");
 
                         // Cache the content bytes, content type, and ETag.
-                        await WebApiCache.AddAsync(_fullCacheKey, contentBytes, cacheTime.AbsoluteExpiration);
-                        await WebApiCache.AddAsync(_fullCacheKey + Constants.ContentTypeKey, contentType, cacheTime.AbsoluteExpiration);
-                        await WebApiCache.AddAsync(_fullCacheKey + Constants.EtagKey, etag, cacheTime.AbsoluteExpiration);
+                        await WebApiCache.AddAsync(fullCacheKey, contentBytes, cacheTime.AbsoluteExpiration);
+                        await WebApiCache.AddAsync(fullCacheKey + Constants.ContentTypeKey, contentType, cacheTime.AbsoluteExpiration);
+                        await WebApiCache.AddAsync(fullCacheKey + Constants.EtagKey, etag, cacheTime.AbsoluteExpiration);
                     }
                 }
             }
