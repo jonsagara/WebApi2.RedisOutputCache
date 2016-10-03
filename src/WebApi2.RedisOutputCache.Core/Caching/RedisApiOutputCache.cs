@@ -189,7 +189,7 @@ return redis.call('INCR', KEYS[1])
         {
             try
             {
-                // Remove it from our local cache.
+                // Optimization: immediately remove it from our local cache without waiting for a pub/sub notification to come in.
                 VersionLocalCache.Default.Remove(key);
 
                 // Notify any subscribers that they should evict this item from their local caches.
