@@ -180,7 +180,7 @@ namespace WebApi2.RedisOutputCache
             if (!MediaTypeHeaderValue.TryParse(contentTypeCached, out contentType))
             {
                 // That didn't work. Extract it from the cache key.
-                contentType = new MediaTypeHeaderValue(_fullCacheKey.Split(new[] { ':' }, 2)[1].Split(';')[0]);
+                contentType = new MediaTypeHeaderValue(GetMediaTypeFromFullCacheKey(_fullCacheKey));
             }
 
             // Create a new response and populated it with the cached bytes.
@@ -250,6 +250,18 @@ namespace WebApi2.RedisOutputCache
             }
 
             ApplyCacheHeaders(actionExecutedContext.ActionContext.Response, cacheTime);
+        }
+
+
+        /// <summary>
+        /// Obtains the media type from the full cachey key.
+        /// </summary>
+        /// <param name="fullCacheKey"></param>
+        /// <returns></returns>
+        private string GetMediaTypeFromFullCacheKey(string fullCacheKey)
+        {
+            var mediaTypeFull = fullCacheKey.Split(new[] { CatchallCacheKeyGenerator.MediaTypeSeparator }, StringSplitOptions.RemoveEmptyEntries)[1];
+            return mediaTypeFull.Split(';')[0];
         }
 
 

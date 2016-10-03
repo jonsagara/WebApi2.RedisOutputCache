@@ -21,6 +21,12 @@ namespace WebApi2.RedisOutputCache
     public class CatchallCacheKeyGenerator : ICacheKeyGenerator
     {
         /// <summary>
+        /// Separates the media type information from the rest of the cache key.
+        /// </summary>
+        // Shoutout to the homie
+        public const string MediaTypeSeparator = "-^-8062013-^-";
+
+        /// <summary>
         /// Generates a cache key containing the namespace/controller/action, and name/value pairs for action arguments.
         /// Query string parameters that do not map to an action parameter are not included.
         /// </summary>
@@ -153,7 +159,7 @@ namespace WebApi2.RedisOutputCache
                 parameters = string.Empty;
             }
 
-            return $"{controllerLowered}-{actionLowered}_v{controllerActionVersionId}{parameters}:{mediaType}";
+            return $"{controllerLowered}-{actionLowered}_v{controllerActionVersionId}{parameters}{MediaTypeSeparator}{mediaType}";
         }
 
 
