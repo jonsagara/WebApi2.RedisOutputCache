@@ -27,7 +27,7 @@ namespace WebApi2.RedisOutputCache
         /// enabling pub/sub communication with other web nodes for sending/receiving notifications to invalidate 
         /// local caches; false otherwise.
         /// </summary>
-        internal bool IsLocalCachingEnabled
+        public bool IsLocalCachingEnabled
         {
             get
             {
@@ -45,7 +45,7 @@ namespace WebApi2.RedisOutputCache
         /// Gets the name of the redis pub/sub channel used to send/receive notifications to invalidate local L1 caches.
         /// </summary>
         /// <returns></returns>
-        internal string ChannelForNotificationsToInvalidateLocalCache
+        public string ChannelForNotificationsToInvalidateLocalCache
         {
             get
             {

@@ -67,6 +67,7 @@
     <Compile Include="CacheOutputConfiguration.cs" />
     <Compile Include="CatchallCacheKeyGenerator.cs" />
     <Compile Include="CatchallOutputCacheAttribute.cs" />
+    <Compile Include="Extensions\HttpParameterDescriptorExtensions.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="ICacheKeyGenerator.cs" />
     <Compile Include="IgnoreCacheOutputAttribute.cs" />

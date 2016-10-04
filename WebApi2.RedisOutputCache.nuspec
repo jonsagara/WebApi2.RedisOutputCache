@@ -24,5 +24,6 @@
     <file src="src\WebApi2.RedisOutputCache\bin\Release\WebApi2.RedisOutputCache.*" target="lib\net45\" />
     <file src="src\**\*.cs" target="src" />
     <file src="src\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs" target="content\Filters" />
+    <file src="src\WebApi2.RedisOutputCache\InvalidateOutputCacheAttribute.cs" target="content\Filters" />
   </files>
 </package>
