@@ -3,6 +3,8 @@
 [Oo]bj/
 lib/
 
+ppfiles/
+
 # mstest test results
 TestResults
 
