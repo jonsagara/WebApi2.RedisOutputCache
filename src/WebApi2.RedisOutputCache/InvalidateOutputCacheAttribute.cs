@@ -14,6 +14,15 @@ using WebApi2.RedisOutputCache.Core.Extensions;
 
 namespace WebApi2.RedisOutputCache
 {
+    /***
+     * 
+     * ATTENTION NUGET PACKAGE USERS:
+     * 
+     * DO NOT MODIFY THIS FILE. IT IS INCLUDED SOLELY FOR DEBUGGING PURPOSES WHILE WE WORK OUT THE KINKS.
+     * 
+     * 
+     ***/
+
     /// <summary>
     /// Declaratively invalidate redis output cache, optionally restricted by one or more target action parameter names.
     /// </summary>
