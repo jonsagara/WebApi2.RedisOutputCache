@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using NLog;
 using WebApi2.RedisOutputCache.Core.Extensions;
 
 namespace WebApi2.RedisOutputCache
@@ -18,6 +20,7 @@ namespace WebApi2.RedisOutputCache
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class InvalidateOutputCacheAttribute : BaseCacheAttribute
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static readonly ConcurrentDictionary<string, string[]> _targetActionParamsByType = new ConcurrentDictionary<string, string[]>();
 
         private readonly string _targetControllerLowered;
@@ -115,10 +118,105 @@ namespace WebApi2.RedisOutputCache
             //   then increment its version number.
             // The constructor already validated that the "invalidate by" parameter is in the target action's parameter
             //   list, so we can use Single here.
+            string controllerActionArgVersionKey = null;
 
-            var theActionArg = actionExecutedContext.ActionContext.ActionArguments.Single(kvp => kvp.Key.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase));
+            var theActionArg = actionExecutedContext.ActionContext.ActionArguments.SingleOrDefault(kvp => kvp.Key.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase));
+            if (default(KeyValuePair<string, object>).Equals(theActionArg) == false)
+            {
+                // We found it, and we can trivially retrieve the value from the action arguments by name.
+                controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString());
+            }
+            else
+            {
+                // The "invalidate by" parameter is part of a view model in the invalidating action's method signature. We have to retrieve
+                //   the value from it. We know the parameter is not one of the simple, default uri-bindable types, so exclude those.
+                var viewModelActionParameters = actionExecutedContext.ActionContext.ActionDescriptor
+                    .GetParameters()
+                    .Where(p => !p.ParameterType.IsDefaultUriBindableType())
+                    .ToArray();
 
-            var controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, theActionArg.Value.GetValueAsString());
+                foreach (var vmActionParam in viewModelActionParameters)
+                {
+                    // Get the corresponding action argument matching the parameter name.
+                    var actionArg = actionExecutedContext.ActionContext.ActionArguments.Single(kvp => kvp.Key == vmActionParam.ParameterName);
+
+                    if (typeof(IEnumerable).IsAssignableFrom(vmActionParam.ParameterType))
+                    {
+                        // It's an array or list of some type. It didn't match by parameter name above, or else we wouldn't be here. There
+                        //   are no public instance properties to examine, so ignore it.
+                        //nonDefaultUriBindableArgNamesValues.Add(new KeyValuePair<string, string>(actionArg.Key, actionArg.Value.GetValueAsString()));
+                        continue;
+                    }
+                    else
+                    {
+                        // It's a view model/dto. We need its public instance property names and values.
+                        if (actionArg.Value != null)
+                        {
+                            // Get the name/value of the public instance property matching it by name.
+                            var pubInstProp = actionArg.Value
+                                .GetType()
+                                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                .Where(p => p.Name.Equals(_invalidateByParamLowered, StringComparison.OrdinalIgnoreCase))
+                                .SingleOrDefault();
+
+                            if (pubInstProp != null)
+                            {
+                                // We found a matching public instance property. Get its value as a string
+                                controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, pubInstProp.GetValue(actionArg.Value).GetValueAsString());
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // The view model/dto object is null. We still need its public instance property names. If a query string parameter of the 
+                            //   same name exists, we'll use its value. Otherwise, we'll use the value from a new instance of the parameter
+                            //   type.
+                            var objInstance = Activator.CreateInstance(vmActionParam.ParameterType);
+                            var pubInstProps = vmActionParam.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                            // Exclude jsonp callback parameters, if any.
+                            var qsParams = actionExecutedContext.ActionContext.Request.GetQueryNameValuePairs()
+                                .Where(x => x.Key.ToLower() != "callback")
+                                .ToArray();
+
+                            foreach (var pubInstProp in pubInstProps)
+                            {
+                                // Case insenstitive compare because query string parameter names can come in as any case.
+                                var matchingQsParams = qsParams.Where(kvp => kvp.Key.Equals(pubInstProp.Name, StringComparison.OrdinalIgnoreCase)).ToArray();
+
+                                if (matchingQsParams.Length > 0)
+                                {
+                                    // When the target is a non-collection, scalar value, the default model binder only selects the first value if 
+                                    //   there are multiple query string parameters with the same name. Mimic that behavior here.
+                                    controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, matchingQsParams[0].Value);
+                                    break;
+                                }
+                                else
+                                {
+                                    // Punt. We don't have anywhere in the current request from which to grab a value, so take the default value 
+                                    //   of the matching property on the instance we created above.
+                                    controllerActionArgVersionKey = CacheKey.ControllerActionArgumentVersion(_targetControllerLowered, _targetActionLowered, _invalidateByParamLowered, pubInstProp.GetValue(objInstance).GetValueAsString());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                
+                if (string.IsNullOrWhiteSpace(controllerActionArgVersionKey))
+                {
+                    // The "invalidate by" parameter value was not a simple, default uri-bindable type in the action method list, and
+                    //   we couldn't find it in any view model/dto public instance properties.
+                    // This is bad, but we don't want to throw an exception and cause the application to stop working. Definitely log
+                    //   the failure, though.
+                    var controller = actionExecutedContext.ActionContext.ControllerContext.Controller.GetType().FullName;
+                    var action = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
+                    Logger.Error($"Output cache invalidation failed on {controller}.{action} with invalidation parameter {_invalidateByParamLowered} targeting {_targetControllerLowered}.{_targetActionLowered}. Unable to find a view model/dto with a matching public instance property.");
+                }
+            }
+
+
             await WebApiCache.IncrAsync(controllerActionArgVersionKey, localCacheNotificationChannel);
         }
 
