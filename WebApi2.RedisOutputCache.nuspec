@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebApi2.RedisOutputCache</id>
-    <version>1.0.7-beta</version>
+    <version>1.0.8-beta</version>
     <authors>Jon Sagara, Filip W</authors>
     <owners>jonsagara</owners>
     <licenseUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache/blob/dev/License.txt</licenseUrl>

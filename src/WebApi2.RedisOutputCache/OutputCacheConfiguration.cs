@@ -75,10 +75,10 @@ namespace WebApi2.RedisOutputCache
 
 
         /// <summary>
-        /// Register a cache output provider.
+        /// Register an output cache provider.
         /// </summary>
         /// <param name="provider"></param>
-        public void RegisterCacheOutputProvider(Func<IApiOutputCache> provider)
+        public void RegisterOutputCacheProvider(Func<IApiOutputCache> provider)
         {
             _configuration.Properties.GetOrAdd(typeof(IApiOutputCache), x => provider);
         }
@@ -190,23 +190,23 @@ namespace WebApi2.RedisOutputCache
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public IApiOutputCache GetCacheOutputProvider(HttpRequestMessage request)
+        public IApiOutputCache GetOutputCacheProvider(HttpRequestMessage request)
         {
             object cache;
             _configuration.Properties.TryGetValue(typeof(IApiOutputCache), out cache);
 
             var cacheFunc = cache as Func<IApiOutputCache>;
 
-            var cacheOutputProvider = cacheFunc != null
+            var outputCacheProvider = cacheFunc != null
                 ? cacheFunc()
                 : request.GetDependencyScope().GetService(typeof(IApiOutputCache)) as IApiOutputCache;
 
-            if (cacheOutputProvider == null)
+            if (outputCacheProvider == null)
             {
                 throw new InvalidOperationException("Unable to obtain an IApiOutputCache instance");
             }
 
-            return cacheOutputProvider;
+            return outputCacheProvider;
         }
 
 

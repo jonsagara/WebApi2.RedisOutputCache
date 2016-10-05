@@ -22,7 +22,7 @@ namespace WebApi2.RedisOutputCache
         /// <param name="req"></param>
         protected virtual void EnsureCache(HttpConfiguration config, HttpRequestMessage req)
         {
-            WebApiCache = config.GetOutputCacheConfiguration().GetCacheOutputProvider(req);
+            WebApiCache = config.GetOutputCacheConfiguration().GetOutputCacheProvider(req);
         }
     }
 }
