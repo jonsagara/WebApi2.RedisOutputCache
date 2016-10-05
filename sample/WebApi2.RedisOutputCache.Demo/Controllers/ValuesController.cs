@@ -7,13 +7,13 @@ namespace WebApi2.RedisOutputCache.Demo.Controllers
     public class ValuesController : ApiController
     {
         [Route("")]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> GetValues()
         {
             return new string[] { "value1", "value2" };
         }
 
         [Route("{id:int}")]
-        public string Get(int id)
+        public string GetValue(int id)
         {
             return "value";
         }
