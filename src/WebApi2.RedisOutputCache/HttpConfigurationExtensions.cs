@@ -12,9 +12,9 @@ namespace WebApi2.RedisOutputCache
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static CacheOutputConfiguration CacheOutputConfiguration(this HttpConfiguration config)
+        public static OutputCacheConfiguration GetOutputCacheConfiguration(this HttpConfiguration config)
         {
-            return new CacheOutputConfiguration(config);
+            return new OutputCacheConfiguration(config);
         }
     }
 }

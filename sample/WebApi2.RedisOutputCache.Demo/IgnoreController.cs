@@ -13,7 +13,7 @@ namespace WebApi2.RedisOutputCache.Demo
             return DateTime.Now.ToString();
         }
 
-        [IgnoreCacheOutput]
+        [IgnoreOutputCache]
         [Route("uncached")]
         public string GetUnCached()
         {
