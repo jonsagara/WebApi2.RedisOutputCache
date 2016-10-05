@@ -128,7 +128,7 @@ namespace WebApi2.RedisOutputCache
             //   somenamespace.controllers.somecontroller-someaction_v1-customerid=3583_v1&userid=31eb2386-1b98-4a5d-bba0-a62d008ea976_v1&qsparam1=ohai:application/json; charset=utf-8"
             //
 
-            var cacheKeyGenerator = config.CacheOutputConfiguration().GetCacheKeyGenerator(actionContext.Request, typeof(CatchallCacheKeyGenerator));
+            var cacheKeyGenerator = config.GetOutputCacheConfiguration().GetCacheKeyGenerator(actionContext.Request, typeof(CatchallCacheKeyGenerator));
             var fullCacheKey = await cacheKeyGenerator.MakeCacheKeyAsync(WebApiCache, actionContext, responseMediaType, controllerLowered, actionLowered);
             actionContext.Request.Properties[FullCacheKey] = fullCacheKey;
 
@@ -227,7 +227,7 @@ namespace WebApi2.RedisOutputCache
             if (cacheTime.AbsoluteExpiration > DateTime.Now)
             {
                 var httpConfig = actionExecutedContext.Request.GetConfiguration();
-                var config = httpConfig.CacheOutputConfiguration();
+                var config = httpConfig.GetOutputCacheConfiguration();
                 var responseMediaType = actionExecutedContext.Request.Properties[CurrentRequestMediaType] as MediaTypeHeaderValue ?? GetExpectedMediaType(httpConfig, actionExecutedContext.ActionContext);
                 var fullCacheKey = actionExecutedContext.Request.Properties[FullCacheKey] as string;
 
@@ -291,7 +291,7 @@ namespace WebApi2.RedisOutputCache
                 }
             }
 
-            if (actionContext.ActionDescriptor.GetCustomAttributes<IgnoreCacheOutputAttribute>().Any())
+            if (actionContext.ActionDescriptor.GetCustomAttributes<IgnoreOutputCacheAttribute>().Any())
             {
                 return false;
             }

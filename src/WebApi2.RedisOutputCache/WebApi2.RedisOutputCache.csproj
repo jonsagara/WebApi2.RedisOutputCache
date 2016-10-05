@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="BaseCacheAttribute.cs" />
     <Compile Include="CacheKey.cs" />
-    <Compile Include="CacheOutputConfiguration.cs" />
+    <Compile Include="OutputCacheConfiguration.cs" />
     <Compile Include="CatchallCacheKeyGenerator.cs" />
     <Compile Include="CatchallOutputCacheAttribute.cs" />
     <Compile Include="Extensions\HttpParameterDescriptorExtensions.cs" />
@@ -90,51 +90,36 @@
   <Target Name="BeforeBuild">
   </Target>
   -->
-
   <!--
 	While we're working out the kinks, include the catchall and invalidate attributes in the target
 	project for easier debugging.
   -->
   <ItemGroup>
-  	<FilesToPp Include="CatchallOutputCacheAttribute.cs;InvalidateOutputCacheAttribute.cs" />
+    <FilesToPp Include="CatchallOutputCacheAttribute.cs;InvalidateOutputCacheAttribute.cs" />
   </ItemGroup>
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
-	  <ParameterGroup>
-	    <InputFilename ParameterType="System.String" Required="true" />
-	    <OutputFilename ParameterType="System.String" Required="true" />
-	    <MatchExpression ParameterType="System.String" Required="true" />
-	    <ReplacementText ParameterType="System.String" Required="true" />
-	  </ParameterGroup>
-	  <Task>
-	    <Reference Include="System.Core" />
-	    <Using Namespace="System" />
-	    <Using Namespace="System.IO" />
-	    <Using Namespace="System.Text.RegularExpressions" />
-	    <Code Type="Fragment" Language="cs">
-	      <![CDATA[
+    <ParameterGroup>
+      <InputFilename ParameterType="System.String" Required="true" />
+      <OutputFilename ParameterType="System.String" Required="true" />
+      <MatchExpression ParameterType="System.String" Required="true" />
+      <ReplacementText ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
 	            File.WriteAllText(
 	                OutputFilename,
 	                Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
 	                );
-	          ]]>
-	    </Code>
-	  </Task>
-	</UsingTask>
+	          ]]></Code>
+    </Task>
+  </UsingTask>
   <Target Name="AfterBuild">
-  	<Copy
-  		SourceFiles="@(FilesToPP)"
-  		DestinationFiles="@(FilesToPP->'..\..\ppfiles\%(Filename)%(Extension).pp')"
-  		/>
-
-  	<ReplaceFileText 
-	    InputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" 
-	    OutputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" 
-	    MatchExpression="namespace WebApi2\.RedisOutputCache" 
-	    ReplacementText="namespace $rootnamespace$.Filters" />
-	<ReplaceFileText 
-	    InputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" 
-	    OutputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" 
-	    MatchExpression="namespace WebApi2\.RedisOutputCache" 
-	    ReplacementText="namespace $rootnamespace$.Filters" />
+    <Copy SourceFiles="@(FilesToPP)" DestinationFiles="@(FilesToPP->'..\..\ppfiles\%(Filename)%(Extension).pp')" />
+    <ReplaceFileText InputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" OutputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
+    <ReplaceFileText InputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" OutputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
   </Target>
 </Project>

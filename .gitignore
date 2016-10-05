@@ -4,6 +4,7 @@
 lib/
 
 ppfiles/
+.vs/
 
 # mstest test results
 TestResults

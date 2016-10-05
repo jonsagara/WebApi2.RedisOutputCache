@@ -6,7 +6,7 @@ namespace WebApi2.RedisOutputCache
     /// When present, suppresses output caching for the class or action.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class IgnoreCacheOutputAttribute : Attribute
+    public sealed class IgnoreOutputCacheAttribute : Attribute
     {
     }
 }

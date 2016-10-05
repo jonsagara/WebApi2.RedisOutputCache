@@ -97,7 +97,7 @@ namespace WebApi2.RedisOutputCache
             }
 
             var config = actionExecutedContext.Request.GetConfiguration();
-            var cacheConfig = config.CacheOutputConfiguration();
+            var cacheConfig = config.GetOutputCacheConfiguration();
 
             EnsureCache(config, actionExecutedContext.Request);
 

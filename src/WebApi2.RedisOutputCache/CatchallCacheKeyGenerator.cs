@@ -136,7 +136,7 @@ namespace WebApi2.RedisOutputCache
                 .ToList();
 
             // Get the versions for the controller/action, and for each argument name/value.
-            var cacheConfig = actionContext.Request.GetConfiguration().CacheOutputConfiguration();
+            var cacheConfig = actionContext.Request.GetConfiguration().GetOutputCacheConfiguration();
             var controllerActionVersionId = await GetControllerActionVersionIdAsync(cache, controllerLowered, actionLowered, cacheConfig.IsLocalCachingEnabled);
 
             var finalList = new List<string>();
