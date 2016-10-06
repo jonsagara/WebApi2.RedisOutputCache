@@ -25,7 +25,9 @@ namespace WebApi2.RedisOutputCache
      ***/
 
     /// <summary>
-    /// Declaratively invalidate redis output cache, optionally restricted by one or more target action parameter names.
+    /// Declaratively invalidate redis output cache, optionally restricted by an argument name/value. If no
+    /// &quot;Invalidate By Param&quot; argument is supplied, this will invalidate output caching for the
+    /// entire action.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public class InvalidateOutputCacheAttribute : BaseCacheAttribute
