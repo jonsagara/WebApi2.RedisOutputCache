@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using StackExchange.Redis;
 
 namespace WebApi2.RedisOutputCache.Demo.Controllers
 {
