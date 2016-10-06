@@ -9,7 +9,6 @@ namespace WebApi2.RedisOutputCache.Demo
     {
         protected void Application_Start()
         {
-            FilterConfig.RegisterGlobalFilters(GlobalConfiguration.Configuration.Filters);
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             // Autofac
