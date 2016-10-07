@@ -1,4 +1,5 @@
-﻿using System.Web.Http.ExceptionHandling;
+﻿using System.Text;
+using System.Web.Http.ExceptionHandling;
 using NLog;
 
 namespace WebApi2.RedisOutputCache.Demo.Infrastructure
@@ -14,7 +15,30 @@ namespace WebApi2.RedisOutputCache.Demo.Infrastructure
 
         public override void Log(ExceptionLoggerContext context)
         {
-            Logger.Error(context.Exception, "Unhandled exception caught and propagated by GlobalExceptionLogger.");
+            var msg = new StringBuilder().AppendLine("*** Unhandled exception caught and propagated by GlobalExceptionLogger ***");
+
+            string controllerFullName = "(unvailable)";
+            string action = "(unvailable)";
+
+            if (context.ExceptionContext?.ControllerContext != null)
+            {
+                controllerFullName = context.ExceptionContext.ControllerContext.Controller.GetType().FullName;
+            }
+
+            if (context.ExceptionContext?.ActionContext != null)
+            {
+                action = context.ExceptionContext.ActionContext.ActionDescriptor.ActionName;
+            }
+
+            msg.AppendLine($"   Location: {controllerFullName}.{action}");
+
+            if (context.ExceptionContext?.Request != null)
+            {
+                msg.AppendLine($"   Method: {context.ExceptionContext.Request.Method.ToString()}");
+                msg.AppendLine($"   RequestUri: {context.Request.RequestUri}");
+            }
+
+            Logger.Error(context.Exception, msg.ToString());
         }
     }
 }
