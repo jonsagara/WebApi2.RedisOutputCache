@@ -22,8 +22,8 @@ namespace WebApi2.RedisOutputCache.Demo.Infrastructure
         {
             var msg = new StringBuilder().AppendLine("*** Unhandled exception caught and propagated by GlobalExceptionLogger ***");
 
-            string controllerFullName = "(unvailable)";
-            string action = "(unvailable)";
+            string controllerFullName = "(controller context unvailable)";
+            string action = "(action context unvailable)";
 
             if (context.ExceptionContext?.ControllerContext != null)
             {
