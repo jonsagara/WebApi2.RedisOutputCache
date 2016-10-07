@@ -15,6 +15,11 @@ namespace WebApi2.RedisOutputCache.Demo.Infrastructure
 
         public override void Log(ExceptionLoggerContext context)
         {
+            Logger.Error(context.Exception, BuildSlightlyInformativeErrorMessage(context));
+        }
+
+        private string BuildSlightlyInformativeErrorMessage(ExceptionLoggerContext context)
+        {
             var msg = new StringBuilder().AppendLine("*** Unhandled exception caught and propagated by GlobalExceptionLogger ***");
 
             string controllerFullName = "(unvailable)";
@@ -34,11 +39,11 @@ namespace WebApi2.RedisOutputCache.Demo.Infrastructure
 
             if (context.ExceptionContext?.Request != null)
             {
-                msg.AppendLine($"   Method: {context.ExceptionContext.Request.Method.ToString()}");
+                msg.AppendLine($"   Method: {context.ExceptionContext.Request.Method?.ToString()}");
                 msg.AppendLine($"   RequestUri: {context.Request.RequestUri}");
             }
 
-            Logger.Error(context.Exception, msg.ToString());
+            return msg.ToString();
         }
     }
 }
