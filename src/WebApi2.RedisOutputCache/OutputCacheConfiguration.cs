@@ -127,7 +127,7 @@ namespace WebApi2.RedisOutputCache
                 //   this instance's local cache.
                 mux.GetSubscriber().Subscribe(ChannelForNotificationsToInvalidateLocalCache, (ch, msg) =>
                 {
-                    Logger.Trace($"Received pub/sub message to evict key '{msg}' from local cache. Channel: {ch}");
+                    //Logger.Trace($"Received pub/sub message to evict key '{msg}' from local cache. Channel: {ch}");
 
                     // Message is the key of the item we need to evict from our local cache.
                     VersionLocalCache.Default.Remove(msg);
