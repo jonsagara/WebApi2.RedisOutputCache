@@ -41,7 +41,7 @@ namespace WebApi2.RedisOutputCache
         private const string CurrentRequestMediaType = nameof(CatchallOutputCacheAttribute) + ":CurrentRequestMediaType";
 
         /// <summary>
-        /// Don't compute this twice if we don't have to. Create in OnActionExecuting, store in HttpContext.Items, 
+        /// Don't compute this twice if we don't have to. Create in OnActionExecuting, store in HttpRequestMessage.Properties,
         /// reference again in OnActionExecuted.
         /// </summary>
         private const string FullCacheKey = nameof(CatchallOutputCacheAttribute) + ":FullCacheKey";
