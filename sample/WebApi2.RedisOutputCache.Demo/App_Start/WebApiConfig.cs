@@ -1,7 +1,5 @@
-﻿using System;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-using WebApi2.RedisOutputCache;
 using WebApi2.RedisOutputCache.Demo.Caching;
 using WebApi2.RedisOutputCache.Demo.Infrastructure;
 
