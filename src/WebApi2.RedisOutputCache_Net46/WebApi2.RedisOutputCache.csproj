@@ -62,30 +62,78 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCacheAttribute.cs" />
-    <Compile Include="CacheKey.cs" />
-    <Compile Include="Caching\IApiOutputCache.cs" />
-    <Compile Include="Caching\RedisApiOutputCache.cs" />
-    <Compile Include="Caching\VersionLocalCache.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="IModelQuery.cs" />
-    <Compile Include="OutputCacheConfiguration.cs" />
-    <Compile Include="CatchallCacheKeyGenerator.cs" />
-    <Compile Include="CatchallOutputCacheAttribute.cs" />
-    <Compile Include="Extensions\HttpParameterDescriptorExtensions.cs" />
-    <Compile Include="HttpConfigurationExtensions.cs" />
-    <Compile Include="ICacheKeyGenerator.cs" />
-    <Compile Include="IgnoreCacheOutputAttribute.cs" />
-    <Compile Include="InvalidateOutputCacheAttribute.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Time\CacheTime.cs" />
-    <Compile Include="Time\ShortTime.cs" />
-    <Compile Include="Time\SpecificTime.cs" />
-    <Compile Include="Time\ThisDay.cs" />
-    <Compile Include="Time\ThisMonth.cs" />
-    <Compile Include="Time\ThisYear.cs" />
+    <Compile Include="..\WebApi2.RedisOutputCache\BaseCacheAttribute.cs">
+      <Link>BaseCacheAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\CacheKey.cs">
+      <Link>CacheKey.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Caching\IApiOutputCache.cs">
+      <Link>Caching\IApiOutputCache.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Caching\RedisApiOutputCache.cs">
+      <Link>Caching\RedisApiOutputCache.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Caching\VersionLocalCache.cs">
+      <Link>Caching\VersionLocalCache.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\CatchallCacheKeyGenerator.cs">
+      <Link>CatchallCacheKeyGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs">
+      <Link>CatchallOutputCacheAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Extensions\HttpParameterDescriptorExtensions.cs">
+      <Link>Extensions\HttpParameterDescriptorExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Extensions\ObjectExtensions.cs">
+      <Link>Extensions\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Extensions\TypeExtensions.cs">
+      <Link>Extensions\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\HttpConfigurationExtensions.cs">
+      <Link>HttpConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\ICacheKeyGenerator.cs">
+      <Link>ICacheKeyGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\IgnoreCacheOutputAttribute.cs">
+      <Link>IgnoreCacheOutputAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\IModelQuery.cs">
+      <Link>IModelQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\InvalidateOutputCacheAttribute.cs">
+      <Link>InvalidateOutputCacheAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\OutputCacheConfiguration.cs">
+      <Link>OutputCacheConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Properties\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\CacheTime.cs">
+      <Link>Time\CacheTime.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\ShortTime.cs">
+      <Link>Time\ShortTime.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\SpecificTime.cs">
+      <Link>Time\SpecificTime.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\ThisDay.cs">
+      <Link>Time\ThisDay.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\ThisMonth.cs">
+      <Link>Time\ThisMonth.cs</Link>
+    </Compile>
+    <Compile Include="..\WebApi2.RedisOutputCache\Time\ThisYear.cs">
+      <Link>Time\ThisYear.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -102,7 +150,11 @@
 	project for easier debugging.
   -->
   <ItemGroup>
-    <FilesToPp Include="CatchallOutputCacheAttribute.cs;InvalidateOutputCacheAttribute.cs" />
+    <FilesToPp Include="..\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs" />
+    <FilesToPp Include="..\WebApi2.RedisOutputCache\InvalidateOutputCacheAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
