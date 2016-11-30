@@ -134,10 +134,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache.Core\WebApi2.RedisOutputCache.Core.csproj">
-      <Project>{3e45fa0b-c465-4de9-9bc3-40a606b73e84}</Project>
-      <Name>WebApi2.RedisOutputCache.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache\WebApi2.RedisOutputCache.csproj">
       <Project>{7A6F57F6-38E1-4287-812E-AD7D1025BA5E}</Project>
       <Name>WebApi2.RedisOutputCache</Name>

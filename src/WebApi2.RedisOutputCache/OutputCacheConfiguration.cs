@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web.Http;
 using NLog;
 using StackExchange.Redis;
-using WebApi2.RedisOutputCache.Core.Caching;
+using WebApi2.RedisOutputCache.Caching;
 
 namespace WebApi2.RedisOutputCache
 {

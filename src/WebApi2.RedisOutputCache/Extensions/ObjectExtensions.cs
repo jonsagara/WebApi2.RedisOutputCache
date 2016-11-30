@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 
-namespace WebApi2.RedisOutputCache.Core.Extensions
+namespace WebApi2.RedisOutputCache.Extensions
 {
     /// <summary>
     /// Extensions to System.Object.

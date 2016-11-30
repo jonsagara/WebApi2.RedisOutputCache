@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace WebApi2.RedisOutputCache.Core.Caching
+namespace WebApi2.RedisOutputCache.Caching
 {
+    /// <summary>
+    /// An in-memory cache for storing parameter version numbers so that we don't have to make a 
+    /// network call every time we want to retrieve one.
+    /// </summary>
     public class VersionLocalCache
     {
         private static readonly VersionLocalCache _default = new VersionLocalCache();
+
+        /// <summary>
+        /// The default instance. A singleton.
+        /// </summary>
         public static VersionLocalCache Default => _default;
 
 
@@ -33,6 +41,12 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             return (T)_cache.AddOrUpdate(key, value, (k, v) => value);
         }
 
+        /// <summary>
+        /// Get the specified value from the cache.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public T Get<T>(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
@@ -49,6 +63,11 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             return default(T);
         }
 
+        /// <summary>
+        /// Remove the item from the cache.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool Remove(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
@@ -65,6 +84,9 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             return false;
         }
 
+        /// <summary>
+        /// Completely clear the cache.
+        /// </summary>
         public void Clear()
         {
             _cache.Clear();

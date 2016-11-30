@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using WebApi2.RedisOutputCache.Core.Caching;
+using WebApi2.RedisOutputCache.Caching;
 
 namespace WebApi2.RedisOutputCache
 {

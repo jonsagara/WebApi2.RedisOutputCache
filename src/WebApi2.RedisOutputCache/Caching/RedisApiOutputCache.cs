@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
 using StackExchange.Redis;
 
-namespace WebApi2.RedisOutputCache.Core.Caching
+namespace WebApi2.RedisOutputCache.Caching
 {
     /// <summary>
     /// Redis-backed output cache for Web API.
@@ -53,6 +52,12 @@ namespace WebApi2.RedisOutputCache.Core.Caching
             return default(T);
         }
 
+        /// <summary>
+        /// If the counter exists, get its current value. Otherwise, initialize to 1 and return it.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="localCacheEnabled"></param>
+        /// <returns></returns>
         public async Task<long> GetOrIncrAsync(string key, bool localCacheEnabled)
         {
             try
@@ -104,6 +109,14 @@ return redis.call('INCR', KEYS[1])
             return default(long);
         }
 
+        /// <summary>
+        /// Increment by 1 the value associated with the specified key. If localCacheNotificationChannel is not null or whitespace,
+        /// publish the key to that channel to notify any subscribers to evict that key from their local caches.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="localCacheNotificationChannel">If not null or whitespace, will publish the key to this channel to notify
+        /// remote subscribes to remove key from their local caches.</param>
+        /// <returns></returns>
         public async Task<long> IncrAsync(string key, string localCacheNotificationChannel = null)
         {
             try
@@ -156,7 +169,6 @@ return redis.call('INCR', KEYS[1])
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <param name="expiration">The expiration.</param>
-        /// <param name="dependsOnKey">The depends on key.</param>
         public async Task<bool> AddAsync(string key, object value, DateTimeOffset expiration)
         {
             if (Equals(value, string.Empty))

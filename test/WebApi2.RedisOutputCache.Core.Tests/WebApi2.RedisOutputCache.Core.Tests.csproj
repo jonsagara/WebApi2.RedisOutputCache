@@ -63,12 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache.Core\WebApi2.RedisOutputCache.Core.csproj">
-      <Project>{3E45FA0B-C465-4DE9-9BC3-40A606B73E84}</Project>
-      <Name>WebApi2.RedisOutputCache.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>

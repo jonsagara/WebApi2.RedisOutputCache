@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using WebApi2.RedisOutputCache;
-using WebApi2.RedisOutputCache.Core;
-using WebApi2.RedisOutputCache.Core.Time;
+using WebApi2.RedisOutputCache.Time;
 
 namespace WebApi2.RedisOutputCache
 {

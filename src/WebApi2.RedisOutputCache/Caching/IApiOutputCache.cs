@@ -1,10 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace WebApi2.RedisOutputCache.Core.Caching
+namespace WebApi2.RedisOutputCache.Caching
 {
+    /// <summary>
+    /// Public interface for output caching.
+    /// </summary>
     public interface IApiOutputCache
     {
+        /// <summary>
+        /// Get the specified item from the cache.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
         Task<T> GetAsync<T>(string key) where T : class;
 
         /// <summary>
@@ -25,8 +34,20 @@ namespace WebApi2.RedisOutputCache.Core.Caching
         /// <returns></returns>
         Task<long> IncrAsync(string key, string localCacheNotificationChannel = null);
 
+        /// <summary>
+        /// Check to see whether the specified key exists in the cache.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         Task<bool> ContainsAsync(string key);
 
+        /// <summary>
+        /// Add the object to the cache.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="o"></param>
+        /// <param name="expiration"></param>
+        /// <returns></returns>
         Task<bool> AddAsync(string key, object o, DateTimeOffset expiration);
     }
 }

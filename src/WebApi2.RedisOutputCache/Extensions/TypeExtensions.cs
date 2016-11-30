@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace WebApi2.RedisOutputCache.Core.Extensions
+namespace WebApi2.RedisOutputCache.Extensions
 {
+    /// <summary>
+    /// Extensions for System.Type.
+    /// </summary>
     public static class TypeExtensions
     {
         /// <summary>
