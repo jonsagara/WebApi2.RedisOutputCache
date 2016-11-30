@@ -98,7 +98,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache\WebApi2.RedisOutputCache.csproj">
+    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache_Net46\WebApi2.RedisOutputCache.csproj">
       <Project>{7a6f57f6-38e1-4287-812e-ad7d1025ba5e}</Project>
       <Name>WebApi2.RedisOutputCache</Name>
     </ProjectReference>
