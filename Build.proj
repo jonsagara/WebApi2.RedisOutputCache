@@ -50,8 +50,8 @@
     </Task>
   </UsingTask>
   <Target Name="CopyFiltsToPP" AfterTargets="DebugBuild;ReleaseBuild">
-    <Copy SourceFiles="@(FilesToPP)" DestinationFiles="@(FilesToPP->'..\..\ppfiles\%(Filename)%(Extension).pp')" />
-    <ReplaceFileText InputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" OutputFilename="..\..\ppfiles\CatchallOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
-    <ReplaceFileText InputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" OutputFilename="..\..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
+    <Copy SourceFiles="@(FilesToPP)" DestinationFiles="@(FilesToPP->'ppfiles\%(Filename)%(Extension).pp')" />
+    <ReplaceFileText InputFilename="ppfiles\CatchallOutputCacheAttribute.cs.pp" OutputFilename="ppfiles\CatchallOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
+    <ReplaceFileText InputFilename="ppfiles\InvalidateOutputCacheAttribute.cs.pp" OutputFilename="ppfiles\InvalidateOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
   </Target>
 </Project>
