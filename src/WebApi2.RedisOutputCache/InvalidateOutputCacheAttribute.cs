@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using NLog;
+using WebApi2.RedisOutputCache;
 using WebApi2.RedisOutputCache.Extensions;
 
 namespace WebApi2.RedisOutputCache
