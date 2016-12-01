@@ -134,7 +134,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache_Net46\WebApi2.RedisOutputCache.csproj">
+    <ProjectReference Include="..\..\src\WebApi2.RedisOutputCache_Net46\WebApi2.RedisOutputCache_Net46.csproj">
       <Project>{7A6F57F6-38E1-4287-812E-AD7D1025BA5E}</Project>
       <Name>WebApi2.RedisOutputCache</Name>
     </ProjectReference>
