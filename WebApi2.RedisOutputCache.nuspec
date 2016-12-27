@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebApi2.RedisOutputCache</id>
-    <version>1.0.10-beta</version>
+    <version>1.0.15-beta</version>
     <authors>Jon Sagara, Filip W</authors>
     <owners>jonsagara</owners>
     <licenseUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache/blob/dev/License.txt</licenseUrl>
@@ -21,6 +21,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="src\WebApi2.RedisOutputCache_Net45\bin\Release\WebApi2.RedisOutputCache.*" target="lib\net45\" />
     <file src="src\WebApi2.RedisOutputCache_Net46\bin\Release\WebApi2.RedisOutputCache.*" target="lib\net46\" />
     <file src="src\**\*.cs" target="src" />
     <file src="ppfiles\*.pp" target="content\Filters" />
