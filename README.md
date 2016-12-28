@@ -1,6 +1,6 @@
 # ASP.NET Web API 2 Output Caching with redis #
 
-This small library allows you to cache Web API 2 output responses in redis. By using versioned controller actions 
+This small library allows you to cache Web API 2 responses in redis. By using versioned controller actions 
 and argument name/value pairs as the cache key, we are able to invalidate cached pages by issuing a single
 `INCRBY` command to redis.
 
