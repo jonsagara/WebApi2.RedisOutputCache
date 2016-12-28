@@ -5,18 +5,18 @@
     <MsTestPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\mstest.exe</MsTestPath>
   </PropertyGroup> 
   <Target Name="RestoreNugetPackages">
-    <Exec Command="nuget restore WebApi2.RedisOutputCache.sln" />
+    <Exec Command="nuget restore ..\src\WebApi2.RedisOutputCache.sln" />
   </Target>
   <Target Name="DebugBuild" DependsOnTargets="RestoreNugetPackages">
     <Message Text="Building $(ProjectName)" />
-    <MSBuild Projects="$(ProjectName).sln" Targets="Clean" Properties="Configuration=Debug" BuildInParallel="true"/>
-    <MSBuild Projects="$(ProjectName).sln" Targets="Build" Properties="Configuration=Debug" BuildInParallel="true"/>
+    <MSBuild Projects="..\src\$(ProjectName).sln" Targets="Clean" Properties="Configuration=Debug" BuildInParallel="true"/>
+    <MSBuild Projects="..\src\$(ProjectName).sln" Targets="Build" Properties="Configuration=Debug" BuildInParallel="true"/>
 	<Message Text="$(ProjectName) Debug Build Complete!" />
   </Target>
   <Target Name="ReleaseBuild" DependsOnTargets="RestoreNugetPackages">
     <Message Text="Building $(ProjectName) Release Build" />
-    <MSBuild Projects="$(ProjectName).sln" Targets="Clean" Properties="Configuration=Release" BuildInParallel="true"/>
-    <MSBuild Projects="$(ProjectName).sln" Targets="Build" Properties="Configuration=Release" BuildInParallel="true"/>
+    <MSBuild Projects="..\src\$(ProjectName).sln" Targets="Clean" Properties="Configuration=Release" BuildInParallel="true"/>
+    <MSBuild Projects="..\src\$(ProjectName).sln" Targets="Build" Properties="Configuration=Release" BuildInParallel="true"/>
     <Message Text="$(ProjectName) Release Build Complete!" />
   </Target>
 
@@ -25,8 +25,8 @@
   project for easier debugging.
   -->
   <ItemGroup>
-    <FilesToPp Include="src\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs" />
-    <FilesToPp Include="src\WebApi2.RedisOutputCache\InvalidateOutputCacheAttribute.cs" />
+    <FilesToPp Include="..\src\WebApi2.RedisOutputCache\CatchallOutputCacheAttribute.cs" />
+    <FilesToPp Include="..\src\WebApi2.RedisOutputCache\InvalidateOutputCacheAttribute.cs" />
   </ItemGroup>
 
   <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -50,8 +50,8 @@
     </Task>
   </UsingTask>
   <Target Name="CopyFiltsToPP" AfterTargets="DebugBuild;ReleaseBuild">
-    <Copy SourceFiles="@(FilesToPP)" DestinationFiles="@(FilesToPP->'ppfiles\%(Filename)%(Extension).pp')" />
-    <ReplaceFileText InputFilename="ppfiles\CatchallOutputCacheAttribute.cs.pp" OutputFilename="ppfiles\CatchallOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
-    <ReplaceFileText InputFilename="ppfiles\InvalidateOutputCacheAttribute.cs.pp" OutputFilename="ppfiles\InvalidateOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
+    <Copy SourceFiles="@(FilesToPP)" DestinationFiles="@(FilesToPP->'..\ppfiles\%(Filename)%(Extension).pp')" />
+    <ReplaceFileText InputFilename="..\ppfiles\CatchallOutputCacheAttribute.cs.pp" OutputFilename="..\ppfiles\CatchallOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
+    <ReplaceFileText InputFilename="..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" OutputFilename="..\ppfiles\InvalidateOutputCacheAttribute.cs.pp" MatchExpression="namespace WebApi2\.RedisOutputCache" ReplacementText="namespace $rootnamespace$.Filters" />
   </Target>
 </Project>

@@ -21,9 +21,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="src\WebApi2.RedisOutputCache_Net45.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net45\" />
-    <file src="src\WebApi2.RedisOutputCache_Net46.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net46\" />
-    <file src="src\**\*.cs" target="src" />
-    <file src="ppfiles\*.pp" target="content\Filters" />
+    <file src="..\src\WebApi2.RedisOutputCache_Net45.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net45\" />
+    <file src="..\src\WebApi2.RedisOutputCache_Net46.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net46\" />
+    <file src="..\src\**\*.cs" target="src" />
+    <file src="..\ppfiles\*.pp" target="content\Filters" />
   </files>
 </package>
