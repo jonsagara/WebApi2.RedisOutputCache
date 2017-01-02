@@ -1,7 +1,33 @@
-ASP.NET Web API Output Caching backed by redis
-==============================================
+# ASP.NET Web API 2 Output Caching with redis #
 
-**NOTE** This is the original README. Documentation for the redis version is forthcoming.
+This small library allows you to cache Web API 2 responses in redis. By using versioned controller actions 
+and argument name/value pairs as the cache key, we are able to invalidate cached pages by issuing a single
+`INCRBY` command to redis.
+
+## Installation ##
+
+You can build from the source here, or you can install the Nuget version:
+
+For Web API 2 (.NET 4.5 or 4.6):
+    
+    PM> Install-Package WebApi2.RedisOutputCache -Pre
+
+If you require strong naming:
+
+    PM> Install-Package WebApi2.RedisOutputCache.StrongName -Pre
+
+
+
+*(more to come)*
+
+# Credit #
+
+I forked Filip Wojcieszyn's excellent [Strathweb.CacheOutput](https://github.com/filipw/Strathweb.CacheOutput) project.
+While my code has diverged considerably, this project would not exist without his prior work. Thank you, Filip, and
+all other contributors.
+
+
+# Original README follows #
 
 A small library bringing caching options, similar to MVC's "OutputCacheAttribute", to Web API actions.
 

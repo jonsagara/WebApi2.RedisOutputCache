@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WebApi2.RedisOutputCache.StrongName</id>
+    <version>1.0.15-beta</version>
+    <authors>Jon Sagara, Filip W</authors>
+    <owners>jonsagara</owners>
+    <licenseUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache/blob/dev/License.txt</licenseUrl>
+    <projectUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Use this version if your project requires strong naming. A fork of Strathweb.CacheOutput.WebApi2, with support for redis.</description>
+    <releaseNotes>Now uses an O(1) INCR-based cache invalidation strategy for the catch-all output caching attribute.</releaseNotes>
+    <copyright>Copyright 2013-2016 Filip Wojcieszyn, Alexandre Brisebois, Jon Sagara</copyright>
+    <tags>aspnet webapi aspnetwebapi redis cache caching outputcache outputcaching</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+      <dependency id="Newtonsoft.Json" version="7.0.1" />
+      <dependency id="NLog" version="4.2.3" />
+      <dependency id="StackExchange.Redis.StrongName" version="1.0.481" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\WebApi2.RedisOutputCache_Net45.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net45\" />
+    <file src="..\src\WebApi2.RedisOutputCache_Net46.StrongName\bin.snk\Release\WebApi2.RedisOutputCache.StrongName.*" target="lib\net46\" />
+    <file src="..\src\**\*.cs" target="src" />
+    <file src="..\ppfiles\*.pp" target="content\Filters" />
+  </files>
+</package>

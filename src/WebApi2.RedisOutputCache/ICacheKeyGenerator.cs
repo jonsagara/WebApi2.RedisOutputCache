@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
-using WebApi2.RedisOutputCache.Core.Caching;
+using WebApi2.RedisOutputCache.Caching;
 
 namespace WebApi2.RedisOutputCache
 {

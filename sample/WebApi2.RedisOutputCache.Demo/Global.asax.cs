@@ -3,7 +3,7 @@ using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
 using StackExchange.Redis;
-using WebApi2.RedisOutputCache.Core.Caching;
+using WebApi2.RedisOutputCache.Caching;
 using WebApi2.RedisOutputCache.Demo.Caching;
 
 namespace WebApi2.RedisOutputCache.Demo
