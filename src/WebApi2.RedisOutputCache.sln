@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi2.RedisOutputCache_Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi2.RedisOutputCache_Net45.StrongName", "WebApi2.RedisOutputCache_Net45.StrongName\WebApi2.RedisOutputCache_Net45.StrongName.csproj", "{1A6FF8D9-0D71-491A-BE70-3762F30C57D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi2.RedisOutputCache.Demo.EndToEndTests", "sample\WebApi2.RedisOutputCache.Demo.EndToEndTests\WebApi2.RedisOutputCache.Demo.EndToEndTests.csproj", "{47C29100-9FFC-4D91-8EBF-782581EFDBB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi2.RedisOutputCache.Demo.EndToEndTests", "..\sample\WebApi2.RedisOutputCache.Demo.EndToEndTests\WebApi2.RedisOutputCache.Demo.EndToEndTests.csproj", "{47C29100-9FFC-4D91-8EBF-782581EFDBB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
