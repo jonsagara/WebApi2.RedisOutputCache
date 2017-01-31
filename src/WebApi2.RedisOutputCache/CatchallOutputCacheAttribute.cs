@@ -80,6 +80,12 @@ namespace WebApi2.RedisOutputCache
         /// </summary>
         public bool MustRevalidate { get; set; }
 
+        /// <summary>
+        /// In general, enabling this is a bad idea, especially if you have a lot of different user agents hitting your service. However,
+        /// sometimes the only fix is a workaround for a workaround... Use at your own risk.
+        /// </summary>
+        public bool VaryByUserAgent { get; set; } = false;
+
 
         internal IModelQuery<DateTime, CacheTime> CacheTimeQuery;
 
@@ -128,7 +134,7 @@ namespace WebApi2.RedisOutputCache
             //
 
             var cacheKeyGenerator = config.GetOutputCacheConfiguration().GetCacheKeyGenerator(actionContext.Request, typeof(CatchallCacheKeyGenerator));
-            var fullCacheKey = await cacheKeyGenerator.MakeCacheKeyAsync(WebApiCache, actionContext, responseMediaType, controllerLowered, actionLowered);
+            var fullCacheKey = await cacheKeyGenerator.MakeCacheKeyAsync(WebApiCache, actionContext, responseMediaType, controllerLowered, actionLowered, VaryByUserAgent);
             actionContext.Request.Properties[FullCacheKey] = fullCacheKey;
 
             if (!(await WebApiCache.ContainsAsync(fullCacheKey)))
@@ -174,7 +180,7 @@ namespace WebApi2.RedisOutputCache
             //
 
             // Get the content type for the request. MediaTypeHeaderValue is not serializable (it deserializes in a 
-            //   very strange state with duplicate charset attributes), so we're going cache it as a string and
+            //   very strange state with duplicate charset attributes), so we're going to cache it as a string and
             //   then parse it here.
             var contentTypeCached = await WebApiCache.GetAsync<string>(fullCacheKey + Constants.ContentTypeKey);
 
@@ -185,7 +191,7 @@ namespace WebApi2.RedisOutputCache
                 contentType = new MediaTypeHeaderValue(GetMediaTypeFromFullCacheKey(fullCacheKey));
             }
 
-            // Create a new response and populated it with the cached bytes.
+            // Create a new response and populate it with the cached bytes.
             actionContext.Response = actionContext.Request.CreateResponse();
             actionContext.Response.Content = new ByteArrayContent(val);
             actionContext.Response.Content.Headers.ContentType = contentType;

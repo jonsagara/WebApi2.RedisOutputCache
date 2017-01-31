@@ -34,8 +34,9 @@ namespace WebApi2.RedisOutputCache
         /// <param name="mediaType"></param>
         /// <param name="controllerLowered"></param>
         /// <param name="actionLowered"></param>
+        /// <param name="varyByUserAgent"></param>
         /// <returns></returns>
-        public async Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered)
+        public async Task<string> MakeCacheKeyAsync(IApiOutputCache cache, HttpActionContext actionContext, MediaTypeHeaderValue mediaType, string controllerLowered, string actionLowered, bool varyByUserAgent)
         {
             // The default set of action argument names/values that make up the cache key:
             //   * name=value of all default URI-bindlable action parameters.
@@ -158,7 +159,24 @@ namespace WebApi2.RedisOutputCache
                 parameters = string.Empty;
             }
 
-            return $"{controllerLowered}-{actionLowered}_v{controllerActionVersionId}{parameters}{MediaTypeSeparator}{mediaType}";
+
+            //
+            // Optionally append the client's user agent to the cache key. We can't expire by user agent, so we don't need to 
+            //   version it. This supports the case where output data varies by user agent.
+            //
+
+            string userAgent = null;
+            if (varyByUserAgent)
+            {
+                userAgent = actionContext.Request.Headers.UserAgent
+                    ?.FirstOrDefault()
+                    ?.Product
+                    ?.ToString();
+            }
+
+            return varyByUserAgent && !string.IsNullOrWhiteSpace(userAgent)
+                ? $"{controllerLowered}-{actionLowered}_v{controllerActionVersionId}{parameters}-{userAgent}-{MediaTypeSeparator}{mediaType}"
+                : $"{controllerLowered}-{actionLowered}_v{controllerActionVersionId}{parameters}{MediaTypeSeparator}{mediaType}";
         }
         
 
