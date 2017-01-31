@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebApi2.RedisOutputCache</id>
-    <version>1.0.15-beta</version>
+    <version>1.0.17-beta</version>
     <authors>Jon Sagara, Filip W</authors>
     <owners>jonsagara</owners>
     <licenseUrl>https://github.com/jonsagara/WebApi2.RedisOutputCache/blob/dev/License.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A fork of Strathweb.CacheOutput.WebApi2, with support for redis.</description>
     <releaseNotes>Now uses an O(1) INCR-based cache invalidation strategy for the catch-all output caching attribute.</releaseNotes>
-    <copyright>Copyright 2013-2016 Filip Wojcieszyn, Alexandre Brisebois, Jon Sagara</copyright>
+    <copyright>Copyright 2013-2017 Filip Wojcieszyn, Alexandre Brisebois, Jon Sagara</copyright>
     <tags>aspnet webapi aspnetwebapi redis cache caching outputcache outputcaching</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
